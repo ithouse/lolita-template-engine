@@ -1,0 +1,15 @@
+lv:
+  "lolita-template-engine":
+    "layouts": "Izkārtojumi"
+    "content blocks": Satura bloki
+  activerecord:
+    models:
+      lolita_content_block: 
+        one: "Satura bloku"
+        other: "Satura bloki"
+      lolita_layout:
+        one: "Izkārtojumu"
+        other: "Izkārtojumi"
+      lolita_layout_url:
+        one: "Saiti"
+        other: "Saites"

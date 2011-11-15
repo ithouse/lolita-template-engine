@@ -1,0 +1,15 @@
+en:
+  "lolita-template-engine":
+    layouts: "Layouts"
+    "content blocks": Content blocks
+  activerecord:
+    models:
+      lolita_content_block: 
+        one: "Content block"
+        other: "Content blocks"
+      lolita_layout:
+        one: "Layout"
+        other: "Layouts"
+      lolita_layout_url:
+        one: "URL"
+        other: "URLs"

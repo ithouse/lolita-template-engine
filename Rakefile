@@ -20,7 +20,7 @@ Jeweler::Tasks.new do |gem|
   gem.summary = %Q{Template engine for Lolita}
   gem.description = %Q{Create and configure different layouts in Lolita}
   gem.email = "support@ithouse.lv"
-  gem.authors = ["ITHouse Latvia","Arturs Meisters"]
+  gem.authors = ["ITHouse","Arturs Meisters"]
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
