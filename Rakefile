@@ -17,25 +17,25 @@ Jeweler::Tasks.new do |gem|
   gem.name = "lolita-template-engine"
   gem.homepage = "http://github.com/ithouse/lolita-template-engine"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
-  gem.email = "arturs@ithouse.lv"
-  gem.authors = ["Arturs Meisters"]
+  gem.summary = %Q{Template engine for Lolita}
+  gem.description = %Q{Create and configure different layouts in Lolita}
+  gem.email = "support@ithouse.lv"
+  gem.authors = ["ITHouse Latvia","Arturs Meisters"]
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
 
 require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|
-  test.libs << 'lib' << 'test'
-  test.pattern = 'test/**/test_*.rb'
+  test.libs << 'lib' << 'rspec'
+  test.pattern = 'rspec/**/*_spec.rb'
   test.verbose = true
 end
 
 require 'rcov/rcovtask'
 Rcov::RcovTask.new do |test|
-  test.libs << 'test'
-  test.pattern = 'test/**/test_*.rb'
+  test.libs << 'rspec'
+  test.pattern = 'rspec/**/*_spec.rb'
   test.verbose = true
   test.rcov_opts << '--exclude "gems/*"'
 end

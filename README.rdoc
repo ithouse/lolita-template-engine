@@ -1,6 +1,6 @@
-= lolita-template-engine
+= Lolita template engine
 
-Description goes here.
+Create and run different templates in Lolita
 
 == Contributing to lolita-template-engine
  
@@ -14,6 +14,6 @@ Description goes here.
 
 == Copyright
 
-Copyright (c) 2011 Arturs Meisters. See LICENSE.txt for
+Copyright (c) 2011 ITHouse Latvia. See LICENSE.txt for
 further details.
 
