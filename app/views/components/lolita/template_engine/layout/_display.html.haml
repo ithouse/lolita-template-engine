@@ -1,0 +1,67 @@
+- content_for :script do 
+  = javascript_include_tag "jquery-ui.min.js" 
+  = javascript_include_tag "lolita/template-engine/layout.js"
+- content_for :style do
+  :css
+    .grid{
+      margin: 10px;
+    }
+    #new-content-blocks{
+      height: 100px;
+      width: 300px;
+      overflow:auto;
+      border: 1px solid blue;
+    }
+    .placeholder{
+      background-color: white;
+      border: 1px solid #d9d9d9;
+      color: white;
+      float:left;
+     
+    }
+  
+    .content-block.active{
+      background-color: #a286f4;
+      text-align: center;
+      float:left;
+    }
+    .content-block.inactive{
+      cursor:pointer;
+    }
+   
+    #content-blocks .inner-placeholder{
+      width:0 !important;
+      height:0 !important;
+    }
+    .inner-placeholder{
+      background-color: #d9d9d9;
+    }
+.secondary
+  .box
+    .boxtitle{:class => "black"}
+      %h1 
+        Content blocks
+      .arrow
+    #content-blocks
+      .content-block{:class => "inactive", :"data-width" => "160", :"data-height" => "80", :style=>"z-index:1000;"} 
+        Banner 1
+        = hidden_field_tag "layout[content_block_ids][]", 1
+      .content-block{:class => "inactive", :"data-width" => "200", :"data-height" => "30"}
+        = hidden_field_tag "layout[content_block_ids][]", 2
+        Banner 2
+      .content-block{:class => "inactive", :"data-width" => "20", :"data-height" => "20"}
+        = hidden_field_tag "layout[content_block_ids][]", 3
+        Banner 3
+      .content-block{:class => "inactive", :"data-width" => "200", :"data-height" => "200"}
+        = hidden_field_tag "layout[content_block_ids][]", 4
+        Banner 4
+      .content-block{:class => "inactive", :"data-width" => "400", :"data-height" => "100"}
+        = hidden_field_tag "layout[content_block_ids][]", 5
+        Banner 5
+      
+.tabs{:class => "template-engine"}
+  .tab{:class => "box first-tab", :id => "layouts_container"}
+    .tab-title{:class => "boxtitle black"}
+      %h1= "Manage layout #{resource.name ? "(#{resource.name})" : ""}"
+      .arrow
+    = render_component "lolita/template_engine/layout", :grid, :resource => resource

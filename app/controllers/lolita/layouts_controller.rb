@@ -2,11 +2,11 @@ class Lolita::LayoutsController < ApplicationController
   include Lolita::ControllerAdditions
   before_filter :authenticate_lolita_user!
   helper Lolita::TemplateEngineHelper
-  
+
   layout "lolita/application"
 
   def new
-    @layout = LolitaLayout.new
+    @layout = LolitaLayout.new(:name => "new layout")
     render :action => "form"
   end
 
