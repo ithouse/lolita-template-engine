@@ -2,6 +2,10 @@
 $(function(){
   var _activated_cb = [];
   var $blocks_source = $("#content-blocks");
+  var _enabled_ph_class = ".placeholder.enabled"
+  var _all_ph_class = ".placeholder"
+  var _disabled_ph_class = ".placeholder.disabled"
+  
 
   function fit_in_placeholder(placeholder,content_block){
    
@@ -48,12 +52,17 @@ $(function(){
     $real_ph.css("cssFloat","left")
   }
 
-  $(".placeholder").each(function(){
+  $(_all_ph_class).each(function(){
     $(this).width($(this).data("width"))
     $(this).css("min-height",($(this).data("height")+"px"))
   })
-  $(".placeholder").sortable({
-    connectWith: ".placeholder",
+
+  $(".content-block.active").live("dblclick",function(){
+    $(this).remove();
+  })
+
+  $(_enabled_ph_class).sortable({
+    connectWith: _enabled_ph_class,
     placeholder: "inner-placeholder",
     cursor: "move",
     start:function(event,ui){
@@ -71,7 +80,7 @@ $(function(){
   }).disableSelection();
 
   $blocks_source.sortable({
-    connectWith: ".placeholder",
+    connectWith: _enabled_ph_class,
     placeholder: 'inner-placeholder',
     cursor: "move",
     items: ".content-block",
@@ -98,8 +107,8 @@ $(function(){
   $("#content-blocks .content-block").mousedown(function(){
     var $new_block = $(this)
     _activated_cb.push(this)
-    $new_block.data("domPositionPrev",$new_block.prev() ? true : false)
-    $new_block.data("domPositionObj", $new_block.prev() || $new_block.parent())
+    $new_block.data("domPositionPrev",$new_block.prev()[0] ? true : false)
+    $new_block.data("domPositionObj", $new_block.prev()[0] ? $new_block.prev() :  $new_block.parent())
     $new_block.removeClass("inactive")
     $new_block.addClass("active")
     $new_block.data("old-width",$new_block.width()).data("old-height",$new_block.height())
