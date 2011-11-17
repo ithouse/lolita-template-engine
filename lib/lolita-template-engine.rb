@@ -2,11 +2,17 @@ require 'lolita'
 
 module Lolita
   module TemplateEngine
-    def self.themes
-      @themes ||= Lolita::TemplateEngine::Themes.new
-    end
+    
   end
 end
+
+module LolitaTemplateEngineConfiguration
+  def themes
+    @themes ||= Lolita::TemplateEngine::Themes.new
+  end
+end
+
+Lolita.scope.extend(LolitaTemplateEngineConfiguration)
 
 require 'lolita-template-engine/errors'
 require 'lolita-template-engine/module'

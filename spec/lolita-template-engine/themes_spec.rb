@@ -28,7 +28,7 @@ describe Lolita::TemplateEngine::Themes do
   end
 
   it "should access theme through square bracket" do
-    themes["theme_one"].should be_a(Lolita::TemplateEngine::Theme)
+    themes[:"theme_one"].should be_a(Lolita::TemplateEngine::Theme)
   end
 
   it "should access theme through themes singelton method" do

@@ -4,7 +4,7 @@ class CreateLolitaLayoutConfiguration < ActiveRecord::Migration
       t.integer :layout_id
       t.string  :placeholder_name, :limit => 30
       t.integer :content_block_id
-      t.string  :predefined_block_name
+      t.string  :predefined_block_name, :limit => 40
       t.integer :order_number
       t.integer :options
     end

@@ -36,7 +36,7 @@ module Lolita
       end
 
       def [](value)
-        self.themes[value.to_sym]
+        self.themes[value]
       end
 
       def method_missing method_name, *args
@@ -52,7 +52,11 @@ module Lolita
 
       def default_app_root
         if defined?(Rails)
-          Rails.app_root
+          new_app_root = File.join(Rails.app_root,"app","themes")
+          ActionController::Base.append_view_paths(File.join(new_app_root,"views"))
+          Dir[File.join(new_app_root,"assets","*")+"/"].each do |asset_path|
+            Rails.application.assets.paths << asset_path
+          end
         end
       end 
 
