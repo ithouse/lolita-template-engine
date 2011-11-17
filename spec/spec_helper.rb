@@ -1,6 +1,5 @@
 require "rubygems"
 require "bundler/setup"
-require 'rspec'
 
 begin
   Bundler.setup(:default, :test)
@@ -10,6 +9,9 @@ rescue Bundler::BundlerError => e
   exit e.status_code
 end
 
+TEST_THEMES_PATH = File.expand_path('spec/test_themes')
+require File.expand_path('lib/lolita-template-engine')
+
 RSpec.configure do |config|
-  
+  config.mock_with :rspec
 end

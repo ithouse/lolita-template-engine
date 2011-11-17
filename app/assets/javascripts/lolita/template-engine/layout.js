@@ -53,7 +53,7 @@ $(function(){
   }
 
   $(_all_ph_class).each(function(){
-    $(this).width($(this).data("width"))
+    $(this).css("width",$(this).data("width")+"px")
     $(this).css("min-height",($(this).data("height")+"px"))
   })
 

@@ -2,11 +2,23 @@ require 'lolita'
 
 module Lolita
   module TemplateEngine
-
+    def self.themes
+      @themes ||= Lolita::TemplateEngine::Themes.new
+    end
   end
 end
 
+require 'lolita-template-engine/errors'
 require 'lolita-template-engine/module'
+
+# All about themes
+require 'lolita-template-engine/themes'
+require 'lolita-template-engine/theme'
+require 'lolita-template-engine/theme/layouts'
+require 'lolita-template-engine/theme/placeholders'
+require 'lolita-template-engine/theme/content_blocks'
+require 'lolita-template-engine/theme/file_processor'
+
 if Lolita.rails3?
   require 'lolita-template-engine/rails'
 end

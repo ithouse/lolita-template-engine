@@ -1,0 +1,23 @@
+.secondary
+  .box
+    .boxtitle{:class => "black"}
+      %h1 
+        = LolitaContentBlock.model_name.human(:count => 3)
+      .arrow
+    = render_component "lolita/template_engine/layout", :theme_select, :resource => resource
+    #content-blocks
+      .content-block{:class => "inactive", :"data-width" => "160", :"data-height" => "80", :style=>"z-index:1000;"} 
+        Banner 1
+        = hidden_field_tag "layout[content_block_ids][]", 1
+      .content-block{:class => "inactive", :"data-width" => "200", :"data-height" => "30"}
+        = hidden_field_tag "layout[content_block_ids][]", 2
+        Banner 2
+      .content-block{:class => "inactive", :"data-width" => "20", :"data-height" => "20"}
+        = hidden_field_tag "layout[content_block_ids][]", 3
+        Banner 3
+      .content-block{:class => "inactive", :"data-width" => "200", :"data-height" => "200"}
+        = hidden_field_tag "layout[content_block_ids][]", 4
+        Banner 4
+      .content-block{:class => "inactive", :"data-width" => "400", :"data-height" => "50"}
+        = hidden_field_tag "layout[content_block_ids][]", 5
+        Banner 5
