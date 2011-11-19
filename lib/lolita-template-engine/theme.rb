@@ -33,6 +33,8 @@ module Lolita
             end
           end
         end
+        @paths.views = ::File.join(path,"views")
+        @paths.assets = ::File.join(path,"assets")
         @paths.layouts = ::File.join(path,"views","layouts",@name)
         raise Lolita::TemplateEngine::Error, "Layouts directory not found in theme (#{@name})" unless File.directory?(@paths.layouts.to_s)
         @paths.content_blocks = ::File.join(path,"views","themes",@name)

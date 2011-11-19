@@ -1,0 +1,7 @@
+<% if @theme %>
+  $("#content-blocks").html("<%=escape_javascript(render_component("lolita/template_engine/content_blocks", :display, :content_blocks => @theme.content_blocks))%>")
+  $("#placeholders-form").replaceWith("<%=escape_javascript(render_component("lolita/template_engine/placeholders", :display, :placeholders => @theme.placeholders))%>")
+<% else %>
+  $("#content-blocks").html("")
+  $("#placeholders-form").remove();
+<% end %>

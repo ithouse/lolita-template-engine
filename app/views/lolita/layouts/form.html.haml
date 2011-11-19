@@ -1,0 +1,19 @@
+- content_for :script do 
+  = javascript_include_tag "jquery-ui.min.js" 
+  = javascript_include_tag "lolita/template-engine/layout.js"
+- content_for :style do
+  = stylesheet_link_tag "lolita/template-engine/layout"
+.secondary  
+  .box
+    .boxtitle{:class => "black"}
+      %h1 
+        = LolitaContentBlock.model_name.human(:count => 3)
+      .arrow
+    = render_component "lolita/template_engine/themes", :select
+    = render_component "lolita/template_engine/content_blocks", :display, :content_blocks => []   
+.tabs{:class => "template-engine"}
+  .tab{:class => "box first-tab"}
+    .tab-title{:class => "boxtitle black"}
+      %h1= t("Manage layout")
+      .arrow
+    = render_component "lolita/template_engine/placeholders",:display, :placeholders => [], :lolita_layout => @layout

@@ -3,12 +3,12 @@ module Lolita
     class Themes
 
       include Enumerable
-      attr_reader :app_root
+      attr_reader :root_path
 
-      def initialize(app_root = nil,silent = false)
+      def initialize(root_path = nil,silent = false)
         @silent = silent
-        @app_root = app_root || default_app_root 
-        raise ArgumentError, "No app root given" unless @app_root
+        @root_path = root_path || default_root_path 
+        raise ArgumentError, "No app root given" unless @root_path
         initialize_themes
       end
 
@@ -46,17 +46,13 @@ module Lolita
       end
 
       def themes_paths 
-        search_path = "#{@app_root}#{app_root[-1] == "/" ? "" : "/"}*/"
+        search_path = "#{@root_path}#{root_path[-1] == "/" ? "" : "/"}*/"
         @themes_paths ||= Dir[search_path]
       end
 
-      def default_app_root
+      def default_root_path
         if defined?(Rails)
-          new_app_root = File.join(Rails.app_root,"app","themes")
-          ActionController::Base.append_view_paths(File.join(new_app_root,"views"))
-          Dir[File.join(new_app_root,"assets","*")+"/"].each do |asset_path|
-            Rails.application.assets.paths << asset_path
-          end
+          File.join(Rails.root,"app","themes")
         end
       end 
 

@@ -1,0 +1,4 @@
+#layouts-select
+  - layouts = [["-Layouts-",nil]]
+  - theme.layouts.names.each{|name| layouts << [name.humanize,name]}
+  = select_tag "current_layout", options_for_select(layouts), :"data-url" => lolita_theme_layout_path(:theme_id=>"-theme-",:id => "-layout-")

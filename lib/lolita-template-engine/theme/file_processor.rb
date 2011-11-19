@@ -24,13 +24,29 @@ module Lolita
 
         private 
 
-        def process_file(file)
-          file.each do |line|
-            if line.match(/data-#{@pattern}/)
-              if process_line(line) && @options[:singular]
-                return true
+        def file_reader
+          lambda{|file|
+            file.each do |line|
+              if line.match(/data-#{@pattern}/)
+                if process_line(line) && @options[:singular]
+                  return true
+                end
               end
             end
+          }
+        end
+
+        def process_file(file)
+          report_process(file) do
+            file_reader.call(file)
+          end
+        end
+
+        def report_process file
+          if defined?(Rails) && Rails.env.to_s == "development"
+            s_time = Time.now
+            yield
+            puts "Template engine processed #{file.path}, it took #{(Time.now-s_time).round(3)} seconds"
           end
         end
 
