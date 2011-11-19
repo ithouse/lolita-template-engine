@@ -47,6 +47,8 @@ module Lolita
             s_time = Time.now
             yield
             puts "Template engine processed #{file.path}, it took #{(Time.now-s_time).round(3)} seconds"
+          else
+            yield
           end
         end
 
