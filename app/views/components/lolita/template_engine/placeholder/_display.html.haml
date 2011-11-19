@@ -1,3 +1,6 @@
 .placeholder{:class => placeholder.disabled ? "disabled" : "enabled", |
   :"data-width" => placeholder.width, :"data-height" => placeholder.height, |
-  :"data-stretch" => placeholder.stretch}
+  :"data-stretch" => placeholder.stretch, |
+  :"data-form" => (render_component("lolita/template_engine/placeholder", :nested_form, :layout_form => layout_form, :placeholder => placeholder))}
+  = layout_form.fields_for :layout_configurations do |builder|
+    = render_component "lolita/template_engine/content_block", :active, :builder => builder

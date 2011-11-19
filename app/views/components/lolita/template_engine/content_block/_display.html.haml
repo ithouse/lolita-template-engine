@@ -1,3 +1,2 @@
-.content-block{:class => "inactive", :"data-width" => content_block.width, :"data-height" => content_block.height} 
+.content-block{:class => "inactive", :"data-name" => content_block.name, :"data-width" => content_block.width, :"data-height" => content_block.height} 
   = content_block.name.humanize
-  = hidden_field_tag "layout[content_block_ids][]", 1

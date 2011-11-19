@@ -4,7 +4,11 @@ $(function(){
   var _enabled_ph_class = ".placeholder.enabled"
   var _all_ph_class = ".placeholder"
   var _disabled_ph_class = ".placeholder.disabled"
+  var _form_class = "#placeholders-form"
   
+  function is_existing_layout(){
+    $(".tabs").data("method") == "PUT"
+  }
 
   //Check if content block fits in placeholder.
   //When placeholder are allowed to stretch vertically or horizontally then checking of height or width are skipped.
@@ -57,6 +61,40 @@ $(function(){
     $real_ph.css("cssFloat","left")
   }
 
+  // Return array of clones of _destroy inputs and id inputs, thoes can be used to add back to form
+  function collect_removed_elements($blocks,skip_old){
+    var clones = !skip_old ? collect_removed_elements($(_form_class + " #removed-cbs-container>div"),true) : []
+    $blocks = $blocks || $(_form_class + " .content-block")
+    $blocks.each(function(){
+      var $destroy = $(this).children("input[id*='__destroy']:last")
+      var $id = $(this).next()
+      if($destroy.length>0 && $id[0] && $id[0].tagName.toLowerCase()=="input" && $id.attr("id").match(/_id$/)){
+        clones.push([$destroy.clone(),$id.clone()])
+      }
+    })
+    return clones
+  }
+
+  // Receive array of arrays, where each inner array container two jquery objects.
+  // First is clone of _destroy input for removed content block and second is clone of id input of removed 
+  // content block. It creates container with id 'removed-cbs-container' ad each _destroy input is put in
+  // another div, so this DOM structure matches real form structure, for less complex logic for cloning in
+  // #collect_removed_elements()
+  function remove_blocks(block_clones){
+    var $removed_container = $(_form_class+" #removed-cbs-container")
+    if(!$removed_container[0]){
+      $(_form_class).append("<div id='removed-cbs-container'></div>")
+      $removed_container = $(_form_class).find("#removed-cbs-container")
+    }
+    $.each(block_clones,function(index,elements){
+      elements[0].val(1)
+      $removed_container.append("<div></div>")
+      var $delete_container = $removed_container.find(":last")
+      $delete_container.append(elements[0])
+      $removed_container.append(elements[1])
+    })
+  }
+
   $("#themes-select select").change(function(){
     var current_theme = $(this).children("option:selected").eq(0).val();
     var url = $(this).data("url").replace("-theme-",current_theme != "" ? current_theme : "_empty_")
@@ -67,11 +105,14 @@ $(function(){
       success:function(html){
         if(html==""){
           $("#content-blocks-container").html("")
-          $("#placeholders-form .placeholders-grid").html("")
         }else{
           $("#content-blocks-container").replaceWith(html)
           initialize_sortables()
+          set_layout_form_data(current_theme)
         }
+        var clones = collect_removed_elements
+        $(_form_class + " .placeholders-grid").html("")
+        remove_blocks(clones)
       }
     })
   })
@@ -86,13 +127,17 @@ $(function(){
       type: "get",
       dataType: "html",
       success:function(html){
+        var clones = collect_removed_elements()
         if(html==""){
-          $("#placeholders-form").html("")
+          $(_form_class).html(html)
         }else{
-          $("#placeholders-form").replaceWith(html);
+          var old_title = $("form #lolita_layout_title").val()
+          $(_form_class).replaceWith(html);
+          set_layout_form_data(theme,layout,old_title)
           initialize_placeholders();
           initialize_sortables() 
         }
+        remove_blocks(clones)
       }
     })
   })
@@ -102,6 +147,33 @@ $(function(){
       $(this).css("width",$(this).data("width")+"px")
       $(this).css("min-height",($(this).data("height")+"px"))
     })
+  }
+
+  function rebuild_order_numbers_for($placeholder){
+    $placeholder.find("input[id*='order_number']").each(function(index){
+      $(this).val(index)
+    })  
+  }
+
+  // Set theme namd and layout name in form
+  function set_layout_form_data(theme,layout,title){
+    $("#lolita_layout_theme_name").val(theme)
+    $("#lolita_layout_name").val(layout)
+    if(title){
+      $("#lolita_layout_title").val(title)
+    }  
+  }
+
+  // Copy form data form pre-defined placeholder nested form 
+  // Add values to hidden fields about where CB is placed and what is its name
+  function add_form_data($placeholder,$block){
+    var form_data = $placeholder.data("form");
+    var new_id = new Date().getTime();
+    var regexp = new RegExp("new_" + "layout_configurations", "g")
+    form_data = form_data.replace(regexp,new_id)
+    $block.append(form_data)
+    $block.children("input[id*='predefined_block_name']").eq(0).val($block.data("name"))
+    rebuild_order_numbers_for($placeholder)
   }
 
   function initialize_sortables(){
@@ -121,6 +193,8 @@ $(function(){
         var $p_holder = ui.item.parent();
         if(!fit_in_placeholder($p_holder,$block)){
           $(this).sortable("cancel");
+        }else{
+          rebuild_order_numbers_for($p_holder)
         }
       }
     }).disableSelection();
@@ -142,13 +216,14 @@ $(function(){
         ui.item.data("started",false)
         var $block = ui.item;
         var $p_holder = ui.item.parent();
-        if(!fit_in_placeholder($p_holder,$block)){
+        if($p_holder.hasClass("placeholder") && fit_in_placeholder($p_holder,$block)){
+          var $clone = $block.clone(true);
+          $block.unbind("mousedown");
+          add_form_data($p_holder,$block);
+          add_clone($clone) 
+        }else{
           $(this).sortable("cancel");
           reset_block($block)
-        }else{
-          var $clone = $block.clone(true);
-          $block.unbind("mousedown")
-          add_clone($clone) 
         }
       }
     }).disableSelection();
@@ -159,7 +234,15 @@ $(function(){
 
    //Remove block on double click from placeholders
   $(".content-block.active").live("dblclick",function(){
+    var clones = collect_removed_elements($(this),true)
+    var $id = $(this).next()
+    if($id[0] && $id[0].tagName.toLowerCase()=="input" && $id.attr("id").match(/_id$/)){
+      $id.remove()
+    }
+    var $placeholder = $(this).parents(".placeholder").eq(0)
     $(this).remove();
+    remove_blocks(clones)
+    rebuild_order_numbers_for($placeholder)
   })
 
   //When user press mouse button on contenblock in list it is changed to its real look. 

@@ -1,0 +1,4 @@
+.placeholders-grid
+  - placeholders.each do |name,placeholder|
+    = render_component "lolita/template_engine/placeholder", :display, :placeholder => placeholder, :layout_form => layout_form
+  

@@ -26,7 +26,6 @@ require 'lolita-template-engine/theme/content_blocks'
 require 'lolita-template-engine/theme/file_processor'
 
 if Lolita.rails3?
-  require 'lolita-template-engine/railtie'
   require 'lolita-template-engine/rails'
 end
 

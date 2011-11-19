@@ -1,22 +1,18 @@
-class Lolita::LayoutsController < ApplicationController
-  include Lolita::ControllerAdditions
-  before_filter :authenticate_lolita_user!
-  before_filter :set_current_theme
+class Lolita::LayoutsController < Lolita::RestController
   helper Lolita::TemplateEngineHelper
 
-  layout "lolita/application"
-
   def new
-    @layout = LolitaLayout.new(:name => "new layout")
+    self.resource = LolitaLayout.new(params[:layout])
     render :action => "form"
   end
 
   def edit
-    @layout = LolitaLayout.find(params[:id])
-    render :text => "ok"
+    self.resource = LolitaLayout.find(params[:id])
+    render :action => "form"
   end
 
   def show
+    self.resource = LolitaLayout.new
     theme = Lolita.themes.theme(params[:theme_id])
     if theme 
       theme_layout = theme.layouts.layout(params[:id])
@@ -27,14 +23,21 @@ class Lolita::LayoutsController < ApplicationController
     end
   end
 
-  private
-
-  def set_current_theme
-    @current_theme = nil
+  def lolita_mapping
+    Lolita.mappings[:layout]
   end
 
-  def is_lolita_resource?
-    true
+  def resource_name
+    "lolita_layout"
+  end
+
+  def show_form
+    self.run(:"after_#{params[:action]}")
+    if request.xhr?
+      render :action => :form, :layout => false
+    else
+      render :action => :form
+    end
   end
  
 end

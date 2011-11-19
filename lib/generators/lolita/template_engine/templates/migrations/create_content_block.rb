@@ -3,6 +3,9 @@ class CreateLolitaContentBlock < ActiveRecord::Migration
     create_table :lolita_content_blocks, :force => true do |t|
       t.string :name, :limit => 40
       t.text :body
+      t.integer :width
+      t.integer :height
+      t.integer :options
       t.string  :theme_name, :limit => 30
       t.string  :placeholder_name, :limit => 30
     end

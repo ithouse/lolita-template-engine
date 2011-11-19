@@ -1,0 +1,5 @@
+- content_block = builder.object.content_block
+.content-block{:class => "active", :"data-name" => content_block.name, :"data-width" => content_block.width, :"data-height" => content_block.height, |
+  :style => "height:#{content_block.height}px;width:#{content_block.width}px"}
+  = content_block.name.humanize
+  = render_component "lolita/template_engine/placeholder", :nested_fields, :builder => builder
