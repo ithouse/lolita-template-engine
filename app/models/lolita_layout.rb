@@ -1,15 +1,30 @@
 class LolitaLayout < ActiveRecord::Base
   include Lolita::Configuration
 
-  has_many :layout_configurations, :class_name => "LolitaLayoutConfiguration", :dependent => :destroy
+  has_many :layout_configurations, :class_name => "LolitaLayoutConfiguration", :dependent => :destroy do
+    def by_placeholder(placeholder)
+      where(:placeholder_name => placeholder.name)
+    end
+  end
   #has_many :content_blocks, :through => :layout_configurations, :class_name => "LolitaContentBlock"
   has_many :urls, :class_name => "LolitaLayoutUrl", :dependent => :destroy
 
   validates :name, :theme_name, :title, :presence => true
 
   accepts_nested_attributes_for :layout_configurations, :allow_destroy => true
+  accepts_nested_attributes_for :urls, :allow_destroy => true
 
-  lolita
+  lolita do
+    tab(:default) do
+      field :title
+      nested_fields_for(:urls) do
+        field :path, :string
+        field :path_select, :array, :builder => {:name => "/lolita/template_engine/layout", :state => "urls"}
+      end
+      field :theme_name, :hidden
+      field :name, :hidden
+    end
+  end
 
   def self.recognize_from(theme,request)
     layouts_by_theme = self.by_theme(theme)
@@ -19,7 +34,7 @@ class LolitaLayout < ActiveRecord::Base
   end
 
   def self.by_theme(theme)
-    where(theme.name)
+    where(:theme_name => theme.name)
   end
 
   def theme
@@ -33,7 +48,7 @@ class LolitaLayout < ActiveRecord::Base
   def content_blocks_for_placeholder(placeholder)
     blocks = []
     current_theme = self.theme
-    self.layout_configuration.where(:placeholder_name => placeholder.name).order("order_number ASC").map do |l_config|
+    self.layout_configurations.where(:placeholder_name => placeholder.name).order("order_number ASC").map do |l_config|
       l_config.content_block(current_theme)
     end.compact
   end

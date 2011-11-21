@@ -46,7 +46,7 @@ module Lolita
               unless File.directory?(path)
                 file_name = ::File.basename(path)
                 file_name = file_name.split(".").first
-                @layouts[file_name.to_sym] = Layout.new(path,file_name,self)
+                @layouts[file_name.to_sym] = Layout.new(path,self)
               end
             end
             @loaded = true
@@ -55,17 +55,15 @@ module Lolita
       end
 
       class Layout
-        attr_reader :name, :human_name, :path, :width,:height
+        
+        attr_reader :name, :system_name, :human_name, :path, :width,:height
 
-        def initialize(path,name=nil,layouts = nil)
-          @name = name
+        def initialize(path,layouts = nil)
           @path = path
           @layouts = layouts
           raise ArgumentError, "Bad path for layout: #{@path}" if @path.blank? || !File.exist?(@path)
-          if @name.blank?
-            @name = ::File.basename(path).split(".").first
-          end
-          @human_name = @name.humanize
+          @system_name = ::File.basename(path).split(".").first
+          @human_name = (@name || @system_name).humanize
           load_dimensions
           @width = @width && @width.to_i
           @height = @height && @height.to_i
@@ -76,7 +74,7 @@ module Lolita
         end
 
         def relative_path
-          "#{@layouts.theme.name}/#{self.name}"
+          "#{@layouts.theme.name}/#{self.system_name}"
         end
 
 

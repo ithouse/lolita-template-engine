@@ -1,10 +1,9 @@
-class Lolita::ContentBlocksController < Lolita::RestController
+class Lolita::ContentBlocksController < Lolita::TemplateEngineController
 
   def index
-    self.resource = LolitaLayout.new()
-    theme = Lolita.themes.theme(params[:theme_id])
-    if theme
-      render_component "lolita/template_engine/content_blocks", :display, :content_blocks => theme.content_blocks
+    self.resource = LolitaLayout.new(:theme_name => params[:theme_id])
+    if engine_current_theme
+      render_component "lolita/template_engine/content_blocks", :display, :content_blocks => engine_current_theme.content_blocks
     else
       render :text => "", :layout => false
     end

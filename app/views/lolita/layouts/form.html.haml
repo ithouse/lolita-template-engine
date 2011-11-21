@@ -10,7 +10,6 @@
         = LolitaContentBlock.model_name.human(:count => 3)
       .arrow
     = render_component "lolita/template_engine/themes", :select
-    = render_component "lolita/template_engine/content_blocks", :display, :content_blocks => existing_content_blocks()  
     = render_component "lolita/shared", :save_button
 .tabs{:class => "template-engine", :"data-method"=>resource.new_record? ? "POST" : "PUT" , |
   :"data-tabs-url" => resource.new_record? ? lolita_layouts_path : lolita_layout_path(resource)}

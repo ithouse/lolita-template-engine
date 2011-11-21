@@ -8,4 +8,5 @@ class LolitaLayoutConfiguration < ActiveRecord::Base
       theme.content_blocks.content_block(self.predefined_block_name.to_s)
     end
   end
+
 end

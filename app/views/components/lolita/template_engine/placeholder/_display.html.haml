@@ -1,6 +1,7 @@
 .placeholder{:class => placeholder.disabled ? "disabled" : "enabled", |
-  :"data-width" => placeholder.width, :"data-height" => placeholder.height, |
+  :"data-width" => placeholder.width(engine_current_layout), :"data-height" => placeholder.height(engine_current_layout), |
   :"data-stretch" => placeholder.stretch, |
-  :"data-form" => (render_component("lolita/template_engine/placeholder", :nested_form, :layout_form => layout_form, :placeholder => placeholder))}
-  = layout_form.fields_for :layout_configurations do |builder|
-    = render_component "lolita/template_engine/content_block", :active, :builder => builder
+  :"data-form" => (render_component("lolita/template_engine/placeholder", :nested_form, :placeholder => placeholder))}
+  = tab_form.fields_for :layout_configurations,tab_form.object.layout_configurations.by_placeholder(placeholder) do |builder|
+    - tab_form(builder) do
+      = render_component "lolita/template_engine/content_block", :active

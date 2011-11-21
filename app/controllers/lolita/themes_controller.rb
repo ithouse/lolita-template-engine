@@ -1,4 +1,4 @@
-class Lolita::ThemesController < Lolita::RestController
+class Lolita::ThemesController < Lolita::TemplateEngineController
 
   def show
     @theme = Lolita.themes.theme(params[:id])

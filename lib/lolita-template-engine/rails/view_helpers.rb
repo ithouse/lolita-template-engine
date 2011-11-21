@@ -21,9 +21,10 @@ module Lolita
 
       def render_content_blocks(placeholder)
         result = ""
-        lolita_layout.content_blocks_for_placeholder(placeholder) do |cb|
-          locals = {:"{cb.name}" => current_theme.presenter.send(:"#{cb.name}")}
-          result +=render(:partial => cb.view_path, :locals => locals)
+        lolita_layout.content_blocks_for_placeholder(placeholder).each do |cb|
+          
+          locals = {:"#{cb.name}" => current_theme.presenter.send(:"#{cb.name}")}
+          result += render(:partial => cb.view_path, :locals => locals)
         end
         raw(result)
       end

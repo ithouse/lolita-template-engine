@@ -57,9 +57,8 @@ module Lolita
       end
 
       class ContentBlock
-
+        include Theme::Dimensions
         attr_reader :name,:single, :path
-        GRID_WIDTH = 700
 
         def initialize(path,name = nil,content_blocks = nil)
           @path = path
@@ -78,35 +77,8 @@ module Lolita
           end
         end
 
-        def width(layout = nil)
-          if layout
-            relative_dimension(:width,layout)
-          else
-            @width
-          end
-        end
-
-        def height(layout = nil)
-          if layout
-            relative_dimension(:height,layout)
-          else
-            @height
-          end
-        end
-
-        def relative_dimension(dimension,layout)
-          l_dimension = layout.send(dimension)
-          cb_dimension = instance_variable_get(:"@#{dimension}")
-          if l_dimension.to_i > 0 
-            diff = GRID_WIDTH.to_f / layout.send(:width)
-            cb_dimension / diff
-          else
-            cb_dimension
-          end
-        end
-
         def view_path
-          File.join("/","themes",@content_blocks.theme.name,@name)
+          File.join("themes",@content_blocks.theme.name,@name)
         end
 
         private

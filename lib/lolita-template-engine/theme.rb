@@ -2,7 +2,7 @@ module Lolita
   module TemplateEngine
     class Theme
 
-      attr_reader :name,:human_name,:path, :paths, :presenter
+      attr_reader :name,:human_name,:path, :paths
       attr_writer :presenter_class
       def initialize(path)
         raise ArgumentError, "Path not found" unless File.directory?(path.to_s)
@@ -13,11 +13,15 @@ module Lolita
       end
 
       def presenter_class
-        @presenter_class ||= "::#{self.name.camelize}".constantize
+        @presenter_class ||= "::#{self.name.camelize}Presenter".constantize
       end
 
       def build_presenter *args,&block
-        @presenter ||= self.presenter_class.new(*args,&block)
+        @presenter = self.presenter_class.new(*args,&block)
+      end
+
+      def presenter
+        @presenter ||= self.presenter_class.new
       end
 
       def layouts

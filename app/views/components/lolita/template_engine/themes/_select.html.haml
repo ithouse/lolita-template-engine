@@ -1,4 +1,6 @@
 #themes-select
   - themes = [["-Themes-",nil]]
   - Lolita.themes.each{|name, theme| themes << [theme.human_name,theme.name]}
-  = select_tag "current_theme", options_for_select(themes, current_theme && current_theme.name), :"data-url" => lolita_theme_content_blocks_path(:theme_id=>"-theme-")
+  = select_tag "current_theme", options_for_select(themes, engine_current_theme && engine_current_theme.name), :"data-url" => select_lolita_theme_layouts_path(:theme_id=>"-theme-")
+- if resource.theme && resource.layout
+  = render_component "lolita/template_engine/layouts", :select

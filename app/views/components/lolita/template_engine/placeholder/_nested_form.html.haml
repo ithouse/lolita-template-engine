@@ -1,3 +1,4 @@
 - layout_object = LolitaLayoutConfiguration.new(:placeholder_name => placeholder.name)
-= layout_form.fields_for :layout_configurations, layout_object,:child_index => "new_layout_configurations" do |builder|
-  = render_component "lolita/template_engine/placeholder", :nested_fields, :builder => builder
+= tab_form.fields_for :layout_configurations, layout_object,:child_index => "new_layout_configurations" do |builder|
+  - tab_form(builder) do
+    = render_component "lolita/template_engine/placeholder", :nested_fields

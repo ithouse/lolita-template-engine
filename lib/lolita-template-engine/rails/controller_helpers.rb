@@ -11,15 +11,15 @@ module Lolita
       end
 
       def render *args, &block
-        if self.current_layout
-          super({:layout => current_layout.relative_path, :nothing => true})
+        if self.current_layout && (!args || args.empty?)
+          super({:nothing => true, :layout => true})
         else
           super
         end
       end
 
       def current_theme=(theme)
-        @current_theme = theme
+        @current_theme = [String,Symbol].include?(theme.class) ? Lolita.themes.theme(theme) : theme
       end
 
       def current_theme
@@ -27,9 +27,11 @@ module Lolita
       end
 
       def current_layout
-        unless @current_layout
-          layout_name = current_theme && find_layout_by_url
-          @current_layout = layout_name && current_theme.layouts.layout(layout_name)
+        unless self.respond_to?(:lolita_mapping)
+          unless @current_layout
+            layout_name = current_theme && find_layout_by_url
+            @current_layout = layout_name && current_theme.layouts.layout(layout_name)
+          end
         end
         @current_layout
       end
@@ -46,9 +48,7 @@ module Lolita
 
       def set_current_layout
         if self.current_layout
-          self.class_eval do
-            layout current_layout
-          end
+          self.class.send(:layout, self.current_layout.relative_path)
         end
       end
 

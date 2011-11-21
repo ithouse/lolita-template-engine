@@ -104,10 +104,9 @@ $(function(){
       dataType:"html",
       success:function(html){
         if(html==""){
-          $("#content-blocks-container").html("")
+          $("#content-blocks-container").remove()
         }else{
-          $("#content-blocks-container").replaceWith(html)
-          initialize_sortables()
+          $(html).insertAfter("#themes-select")
           set_layout_form_data(current_theme)
         }
         var clones = collect_removed_elements
@@ -122,23 +121,36 @@ $(function(){
     var layout = $(this).children("option:selected").eq(0).val();
     layout = layout != "" ? layout : "_empty_"
     var url = $(this).data("url").replace("-theme-", theme).replace("-layout-",layout)
-    $.ajax({
-      url: url,
-      type: "get",
-      dataType: "html",
-      success:function(html){
-        var clones = collect_removed_elements()
-        if(html==""){
-          $(_form_class).html(html)
-        }else{
-          var old_title = $("form #lolita_layout_title").val()
-          $(_form_class).replaceWith(html);
-          set_layout_form_data(theme,layout,old_title)
-          initialize_placeholders();
-          initialize_sortables() 
+    var blocks_url = $(this).data("blocks-url").replace("-theme-", theme).replace("-layout-",layout)
+    var urls = $(_form_class+" .nested_form:first").clone();
+    $.when(
+      $.ajax({
+        url: blocks_url,
+        type: "get",
+        dataType: "html",
+        success:function(html){
+          $("#content-blocks-container #content-blocks").html(html)
         }
-        remove_blocks(clones)
-      }
+      }),
+      $.ajax({
+        url: url,
+        type: "get",
+        dataType: "html",
+        success:function(html){
+          var clones = collect_removed_elements()
+          if(html==""){
+            $(_form_class).html(html)
+          }else{
+            var old_title = $("form #lolita_layout_title").val()
+            $(_form_class).replaceWith(html);
+            set_layout_form_data(theme,layout,old_title,urls)
+          }
+          remove_blocks(clones)
+        }
+      })
+    ).then(function(){
+      initialize_placeholders();
+      initialize_sortables() 
     })
   })
 
@@ -156,12 +168,15 @@ $(function(){
   }
 
   // Set theme namd and layout name in form
-  function set_layout_form_data(theme,layout,title){
+  function set_layout_form_data(theme,layout,title,urls){
     $("#lolita_layout_theme_name").val(theme)
     $("#lolita_layout_name").val(layout)
     if(title){
       $("#lolita_layout_title").val(title)
     }  
+    if(urls){
+      $(_form_class + " .nested_form:first").replaceWith(urls)
+    }
   }
 
   // Copy form data form pre-defined placeholder nested form 
@@ -255,8 +270,8 @@ $(function(){
     $new_block.data("old-width",$new_block.data("old-width") || $new_block.width()).data("old-height",$new_block.data("old-height") || $new_block.height())
     $new_block.removeClass("inactive")
     $new_block.addClass("active")
-    $new_block.width($new_block.attr("data-width"))
-    $new_block.height($new_block.attr("data-height"))
+    $new_block.width($new_block.data("width"))
+    $new_block.height($new_block.data("height"))
   })
 
   // When user pressed mouse button and didn't start draging content block it is restored to its previous 

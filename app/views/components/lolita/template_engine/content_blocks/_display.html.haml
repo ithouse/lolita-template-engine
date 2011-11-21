@@ -1,5 +1,2 @@
-#content-blocks-container
-  = render_component "lolita/template_engine/layouts", :select, :theme => content_blocks.theme if content_blocks.any?
-  #content-blocks
-    - content_blocks.each do |name,content_block|
-      = render_component "lolita/template_engine/content_block", :display, :content_block => content_block
+- content_blocks.each do |name,content_block|
+  = render_component "lolita/template_engine/content_block", :display, :content_block => content_block

@@ -64,6 +64,12 @@ module Lolita
   #     end
   # Remember that theme presenter should have methods for each content block it contains. Variables may not be presented 
   # but theme should return something (nil or whatsoever)
+  # If you want to assign different presenter than you should define writer methods in presenter.
+  # In presenter
+  #     attr_writer :filter
+  # In controller you assign whatever you want
+  #     current_theme.build_presenter()
+  #     presenter.filter = SpecialCaseFilter.new(request)
   module TemplateEngine
     
   end
@@ -83,6 +89,7 @@ require 'lolita-template-engine/module'
 # All about themes
 require 'lolita-template-engine/themes'
 require 'lolita-template-engine/theme'
+require 'lolita-template-engine/theme/dimensions'
 require 'lolita-template-engine/theme/layouts'
 require 'lolita-template-engine/theme/placeholders'
 require 'lolita-template-engine/theme/content_blocks'

@@ -1,6 +1,8 @@
 = form_for resource, :html => {:id => "placeholders-form"} do |f|
-  = f.hidden_field :theme_name
-  = f.hidden_field :name
-  = f.text_field :title
-  = render_component "lolita/template_engine/placeholders", :grid, :placeholders => placeholders, :layout_form => f
+  - tab_form(f) do
+    = render_component "lolita/configuration/tab", :fields, :tab => tab_form.object.lolita.tabs.first
+    .field
+      - field = Lolita::Configuration::Field::Base.new(tab_form.object.lolita.dbi,:placeholders)
+      = render_component "lolita/configuration/field", :label, :field => field
+      = render_component "lolita/template_engine/placeholders", :grid, :placeholders => placeholders
   .clear
