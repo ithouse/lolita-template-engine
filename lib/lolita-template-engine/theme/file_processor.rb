@@ -85,7 +85,7 @@ module Lolita
         end
 
         def default_regexp(name)
-          /data-#{name}\s*"?\s*=\s*"([^"]+)"/
+          /data-#{name}\s*"?\s*=>?\s*"([^"]+)"/
         end
 
       end
