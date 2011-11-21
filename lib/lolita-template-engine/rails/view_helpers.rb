@@ -15,8 +15,12 @@ module Lolita
         #     end
         #   end
         # end
-        placeholder = current_layout && current_layout.placeholders.placeholder(name)
-        raw(render_content_blocks(placeholder))
+        current_placeholder = current_layout && current_layout.placeholders.placeholder(name)
+        if current_placeholder 
+          raw(render_content_blocks(current_placeholder))
+        else
+          ""
+        end
       end
 
       def render_content_blocks(placeholder)

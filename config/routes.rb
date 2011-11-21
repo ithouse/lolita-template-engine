@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   namespace "lolita" do
     resources :layouts, :only => [:new,:create,:edit,:update,:show]
-    resources :themes, :only => [:show] do
+    resources :themes, :only => :none do
       resources :layouts, :only => [:show] do
         collection do
           get :select
@@ -11,7 +11,6 @@ Rails.application.routes.draw do
           get :content_blocks
         end
       end
-      resources :content_blocks, :only => [:index]
     end
   end
 

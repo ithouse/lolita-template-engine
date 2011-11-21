@@ -1,16 +1,5 @@
 class Lolita::LayoutsController < Lolita::TemplateEngineController
   
-  def new
-    self.resource = LolitaLayout.new(params[:layout])
-    render :action => "form"
-  end
-
-  def edit
-    self.resource = LolitaLayout.find(params[:id])
-    
-    render :action => "form"
-  end
-
   def show
     self.resource = LolitaLayout.new(:theme_name => params[:theme_id], :name => params[:id])
     if engine_current_theme 
@@ -24,7 +13,9 @@ class Lolita::LayoutsController < Lolita::TemplateEngineController
   def select
     self.resource = LolitaLayout.new(:theme_name => params[:theme_id])
     if engine_current_theme
-      render_component "lolita/template_engine/layouts", :select, :theme => engine_current_theme
+      render_component "lolita/template_engine/layouts", :select
+    else
+      render :text => "", :layout => false
     end
   end
 
