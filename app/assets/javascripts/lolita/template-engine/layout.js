@@ -252,16 +252,16 @@ $(function(){
     _activated_cb.push(this)
     $new_block.data("domPositionPrev",$new_block.prev()[0] ? true : false)
     $new_block.data("domPositionObj", $new_block.prev()[0] ? $new_block.prev() :  $new_block.parent())
+    $new_block.data("old-width",$new_block.data("old-width") || $new_block.width()).data("old-height",$new_block.data("old-height") || $new_block.height())
     $new_block.removeClass("inactive")
     $new_block.addClass("active")
-    $new_block.data("old-width",$new_block.width()).data("old-height",$new_block.height())
     $new_block.width($new_block.attr("data-width"))
     $new_block.height($new_block.attr("data-height"))
   })
 
   // When user pressed mouse button and didn't start draging content block it is restored to its previous 
   // look when mouse button is released.
-  $("body").mouseup(function(){
+  $("body").live("mouseup",function(){
     while(_activated_cb.length>0){
       var current_cb = _activated_cb.shift()
       if(!$(current_cb).data("started")){

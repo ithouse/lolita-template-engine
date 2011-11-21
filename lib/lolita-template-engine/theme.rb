@@ -2,13 +2,22 @@ module Lolita
   module TemplateEngine
     class Theme
 
-      attr_reader :name,:human_name,:path, :paths
+      attr_reader :name,:human_name,:path, :paths, :presenter
+      attr_writer :presenter_class
       def initialize(path)
         raise ArgumentError, "Path not found" unless File.directory?(path.to_s)
         @path = path
         @name = path.split("/").last
         @human_name = @name.humanize
         define_path_set
+      end
+
+      def presenter_class
+        @presenter_class ||= "::#{self.name.camelize}".constantize
+      end
+
+      def build_presenter *args,&block
+        @presenter ||= self.presenter_class.new(*args,&block)
       end
 
       def layouts
@@ -25,10 +34,11 @@ module Lolita
         @paths = {}
         class << @paths
           def method_missing method_name, *args
+            original_method_name = method_name
             method_name = method_name.to_s.match(/\=$/) ? method_name.to_s.gsub("=","") : method_name
             if args && args.empty? && self.keys.include?(method_name.to_sym)
               self[method_name.to_sym]
-            elsif args && args.any?
+            elsif args && args.any? && original_method_name.match(/\=$/)
               self[method_name.to_sym] = args[0].to_s
             end
           end

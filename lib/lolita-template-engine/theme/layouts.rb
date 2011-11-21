@@ -46,7 +46,7 @@ module Lolita
               unless File.directory?(path)
                 file_name = ::File.basename(path)
                 file_name = file_name.split(".").first
-                @layouts[file_name.to_sym] = Layout.new(path,file_name)
+                @layouts[file_name.to_sym] = Layout.new(path,file_name,self)
               end
             end
             @loaded = true
@@ -55,20 +55,41 @@ module Lolita
       end
 
       class Layout
-        attr_reader :name, :human_name, :path
+        attr_reader :name, :human_name, :path, :width,:height
 
-        def initialize(path,name=nil)
+        def initialize(path,name=nil,layouts = nil)
           @name = name
           @path = path
+          @layouts = layouts
           raise ArgumentError, "Bad path for layout: #{@path}" if @path.blank? || !File.exist?(@path)
           if @name.blank?
             @name = ::File.basename(path).split(".").first
           end
           @human_name = @name.humanize
+          load_dimensions
+          @width = @width && @width.to_i
+          @height = @height && @height.to_i
         end
 
         def placeholders 
           @placeholders ||=Placeholders.new(self)
+        end
+
+        def relative_path
+          "#{@layouts.theme.name}/#{self.name}"
+        end
+
+
+        private
+
+        def load_dimensions
+          f_processor = FileProcessor.new(self.path, "layout", :singular => true)
+          f_processor.process
+          (f_processor.results.first || []).each do |attr,value|
+            if self.respond_to?(attr.to_sym)
+              instance_variable_set(:"@#{attr}",value)
+            end
+          end
         end
       end
       

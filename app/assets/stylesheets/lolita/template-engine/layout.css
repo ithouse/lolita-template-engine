@@ -1,11 +1,15 @@
 .placeholders-grid{
   margin: 10px;
+  width: 700px;
 }
 #new-content-blocks{
   height: 100px;
   width: 300px;
   overflow:auto;
   border: 1px solid blue;
+}
+#placeholders-form{
+  overflow:auto;
 }
 .placeholder{
   background-color: white;

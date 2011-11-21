@@ -11,6 +11,17 @@ class LolitaLayout < ActiveRecord::Base
 
   lolita
 
+  def self.recognize_from(theme,request)
+    layouts_by_theme = self.by_theme(theme)
+    if url = LolitaLayoutUrl.recognize(layouts_by_theme,request)
+      url.lolita_layout
+    end
+  end
+
+  def self.by_theme(theme)
+    where(theme.name)
+  end
+
   def theme
     Lolita.themes.theme(self.theme_name.to_s)
   end
@@ -19,13 +30,11 @@ class LolitaLayout < ActiveRecord::Base
     self.theme && self.theme.layouts.layout(self.name.to_s)
   end
 
-  def content_blocks
+  def content_blocks_for_placeholder(placeholder)
     blocks = []
-    self.layout_configurations.order("order_number ASC").each do |rec|
-      if c_block = theme.content_blocks.content_block(rec.predefined_block_name.to_s)
-        blocks << c_block
-      end
-    end
-    blocks
+    current_theme = self.theme
+    self.layout_configuration.where(:placeholder_name => placeholder.name).order("order_number ASC").map do |l_config|
+      l_config.content_block(current_theme)
+    end.compact
   end
 end
