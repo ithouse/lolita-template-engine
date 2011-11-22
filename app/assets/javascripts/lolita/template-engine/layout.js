@@ -36,8 +36,7 @@ function windowScrollDimensions(){
 
 function resize_elements($elements, change_dimensions){
   if(parseInt(LayoutConfig.width) > 0){
-    $(function(){
-      var $grid = $("#placeholders-form .placeholders-grid")
+    var $grid = $("#placeholders-form .placeholders-grid")
     
     var grid_width = $grid.eq(0).width();
     if($(window).height() >= $(document).height()){
@@ -54,14 +53,35 @@ function resize_elements($elements, change_dimensions){
         $block.width(w).height(h)
       }
     })
-    })
+    return $elements
   }
 }
 
+function center_spans($blocks){
+  ($blocks || $(".content-block.active span")).each(function(){
+    var $s = $(this)//.children("span").eq(0)
+    var $p = $(this).parent();
+    var $p_w = parseInt($p.data("width") - $p.data("width") * 0.1)
+    $s.css({opacity:0.1})
+    var last_size = 8
+    var f_size = 8
+    $s.css("font-size",f_size);
+    while($s.width()<$p_w){
+      $s.css("font-size",f_size);
+      last_size = f_size
+      f_size = f_size + 1
+    }
+    $s.css("font-size", last_size)
+    $s.css("top",(($p.data("height") - $s.height())/2)+"px")
+  })
+}
+
 function resize_all_elements(){
+  //var $active_blocks = $(".content-block.active")
+  resize_elements($("#placeholders-form .placeholder"),true)
   resize_elements($(".content-block.active"),true);
   resize_elements($(".content-block.inactive"));
-  resize_elements($("#placeholders-form .placeholder"),true)
+  center_spans()
 }
 
 $(window).resize(function(){
@@ -271,6 +291,7 @@ $(function(){
       connectWith: _enabled_ph_class,
       placeholder: "inner-placeholder",
       cursor: "move",
+      items: ".content-block",
       start:function(event,ui){
         
         fix_real_placeholder(ui)
@@ -309,6 +330,7 @@ $(function(){
           $block.unbind("mousedown");
           add_form_data($p_holder,$block);
           add_clone($clone) 
+          center_spans($block.children("span"))
         }else{
           $(this).sortable("cancel");
           reset_block($block)

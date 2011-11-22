@@ -13,24 +13,37 @@
 
 }
 #placeholders-form .field{
-  overflow: auto;
+  overflow: initial !important;
 }
 .placeholder{
+  text-align: center;
+  position: relative;
   background-color: white;
   border: 1px solid #d9d9d9;
   color: white;
   float:left;
+}
+.placeholder span{
+  font-weight: bold;
+  position: absolute;
+  color: black;
+  z-index: 1;
 }
 .placeholder.disabled{
   background-color: #d9d9d9;
 }
 .content-block{
   cursor: pointer;
+  z-index: 100;
 }
 .content-block.active{
   background-color: #a286f4;
   text-align: center;
   float:left;
+}
+.content-block.active span{
+  font-weight: bold;
+  position:relative;
 }
 .content-block.inactive{
 

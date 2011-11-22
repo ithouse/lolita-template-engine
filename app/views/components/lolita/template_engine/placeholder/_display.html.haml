@@ -3,7 +3,7 @@
   :"data-stretch" => placeholder.stretch, |
   :"data-form" => (render_component("lolita/template_engine/placeholder", :nested_form, :placeholder => placeholder))}
   //.title
-  //= placeholder.name.humanize
+  //%span= placeholder.name.humanize
   = tab_form.fields_for :layout_configurations,tab_form.object.layout_configurations.by_placeholder(placeholder) do |builder|
     - tab_form(builder) do
       = render_component "lolita/template_engine/content_block", :active
