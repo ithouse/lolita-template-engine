@@ -165,6 +165,16 @@ $(function(){
     })
   }
 
+  $(".nested-form-fields-container .controller_select").live("change",function(){
+    var controller = $(this).children("option:selected").eq(0).val();
+    var actions = ControllersActions[controller]
+    var $action_select = $(this).siblings(".action_select").eq(0)
+    $action_select.html('<option></option>')
+    $.each(actions || [],function(i,action){
+      $action_select.append('<option value="'+action+'">'+action.replace("Controller","")+'</option>')
+    })
+  })
+
   $("#themes-select select").change(function(){
     var current_theme = $(this).children("option:selected").eq(0).val();
     var url = $(this).data("url").replace("-theme-",current_theme != "" ? current_theme : "_empty_")

@@ -17,13 +17,17 @@ class LolitaLayout < ActiveRecord::Base
   lolita do
     tab(:default) do
       field :title
-      nested_fields_for(:urls) do
+      nested_fields_for(:urls, :build_method => :ordered_urls) do
         field :path, :string
         field :path_select, :array, :builder => {:name => "/lolita/template_engine/layout", :state => "urls"}
       end
       field :theme_name, :hidden
       field :name, :hidden
     end
+  end
+
+  def ordered_urls
+    self.urls.order("lolita_layout_urls.id asc")
   end
 
   def self.recognize_from(theme,request)

@@ -53,7 +53,7 @@ module Lolita
       end
 
       def find_layout_by_url
-        self.lolita_layout = LolitaLayout.recognize_from(current_theme,request)
+        self.lolita_layout ||= LolitaLayout.recognize_from(current_theme,request)
         lolita_layout && lolita_layout.name
       end
 

@@ -18,8 +18,8 @@ class LolitaLayoutUrl < ActiveRecord::Base
   end
 
   def self.controller_action_match(request,urls)
-    controller_match = urls[:controller].eq(request.params[:controller])
-    action_match = urls[:action].eq(request.params[:action]).or(urls[:action].eq(nil))
+    controller_match = urls[:controller].eq(request.params[:controller].camelize)
+    action_match = urls[:action].eq(request.params[:action]).or(urls[:action].eq(""))
     action_match = controller_match.and(action_match)
     action_match
   end

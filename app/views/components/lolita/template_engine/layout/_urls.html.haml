@@ -1,0 +1,2 @@
+= tab_form.select :controller, controllers_options_for_select(tab_form.object.controller), {:include_blank => true},:class => "controller_select"
+= tab_form.select :action, actions_options_for_select(tab_form.object.controller, tab_form.object.action),{:include_blank => true}, :class => "action_select"
