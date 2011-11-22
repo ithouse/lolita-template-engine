@@ -63,11 +63,10 @@ module Lolita
         def initialize(path,name = nil,content_blocks = nil)
           @path = path
           @content_blocks = content_blocks
-          load_attributes
           raise ArgumentError, "Bad path for content block: #{@path}" unless File.exist?(@path)
-          if @name.blank?
-            @name = name || ::File.basename(path).split(".").first.gsub(/^_/,"")
-          end
+          load_attributes
+          raise Lolita::TemplateEngine::Error, "Meta-information about block not specified. Add 'data-content-block' somewhere in #{@path}"
+          @name = @name.blank? ? (name || ::File.basename(path).split(".").first.gsub(/^_/,"")) : @name
           @width = @width && @width.to_i
           @height = @height && @height.to_i
           @single = @single == "true" ? true : false
