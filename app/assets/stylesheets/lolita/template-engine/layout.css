@@ -1,5 +1,7 @@
 .placeholders-grid{
-  margin: 10px;
+  float: left;
+  width: 99%;
+  position: relative;
 }
 #new-content-blocks{
   height: 100px;
@@ -8,7 +10,7 @@
   border: 1px solid blue;
 }
 #placeholders-form{
-  overflow:auto;
+
 }
 #placeholders-form .field{
   overflow: auto;

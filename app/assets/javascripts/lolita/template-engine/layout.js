@@ -1,20 +1,59 @@
 var LayoutConfig = {
   width: false
 }
+function windowScrollDimensions(){
+  var i = document.createElement('p');
+  i.style.width = '100%';
+
+  i.style.height = '200px';
+
+  var o = document.createElement('div');
+  o.style.position = 'absolute';
+  o.style.top = '0px';
+  o.style.left = '0px';
+  o.style.visibility =
+  'hidden';
+  o.style.width = '200px';
+  o.style.height = '150px';
+  o.style.overflow = 'hidden';
+  o.appendChild(i);
+
+  document.body.appendChild(o);
+  var w1 = i.offsetWidth;
+  var
+  h1 = i.offsetHeight;
+  o.style.overflow = 'scroll';
+  var w2 = i.offsetWidth;
+  var h2 = i.offsetHeight;
+  if (w1 == w2) w2 = o.clientWidth;
+  if (h1 == h2) h2 = o.clientWidth;
+
+  document.body.removeChild(o);
+
+  window.scrollbarWidth = w1-w2;
+  window.scrollbarHeight = h1-h2;
+}
 
 function resize_elements($elements, change_dimensions){
   if(parseInt(LayoutConfig.width) > 0){
-    var grid_width = $("#placeholders-form .placeholders-grid").eq(0).width();
+    $(function(){
+      var $grid = $("#placeholders-form .placeholders-grid")
+    
+    var grid_width = $grid.eq(0).width();
+    if($(window).height() >= $(document).height()){
+      grid_width = grid_width - window.scrollbarWidth
+    }
     var diff = grid_width / LayoutConfig.width
     $elements.each(function(){
       var $block = $(this);
-      var w = Math.floor(parseInt($block.attr("data-width")) * diff);
-      var h = Math.floor(parseInt($block.attr("data-height")) * diff);
+      var w = Math.floor(parseInt($block.attr("data-width")) * diff)-2;
+      var h = Math.floor(parseInt($block.attr("data-height")) * diff)-2;
       $block.data("width",w)
       $block.data("height",h);
       if(change_dimensions){
         $block.width(w).height(h)
       }
+    })
     })
   }
 }
@@ -30,6 +69,7 @@ $(window).resize(function(){
 })
 
 $(function(){
+  windowScrollDimensions()
   var _activated_cb = [];
   var _enabled_ph_class = ".placeholder.enabled"
   var _all_ph_class = ".placeholder"
@@ -179,18 +219,10 @@ $(function(){
         }
       })
     ).then(function(){
-      //initialize_placeholders();
       resize_all_elements();
       initialize_sortables() 
     })
   })
-
-  function initialize_placeholders(){
-    $(_all_ph_class).each(function(){
-      $(this).css("width",$(this).data("width")+"px")
-      $(this).css("min-height",($(this).data("height")+"px"))
-    })
-  }
 
   function rebuild_order_numbers_for($placeholder){
     $placeholder.find("input[id*='order_number']").each(function(index){
