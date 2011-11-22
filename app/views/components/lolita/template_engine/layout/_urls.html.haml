@@ -1,2 +1,10 @@
-= tab_form.select :controller, controllers_options_for_select(tab_form.object.controller), {:include_blank => true},:class => "controller_select"
-= tab_form.select :action, actions_options_for_select(tab_form.object.controller, tab_form.object.action),{:include_blank => true}, :class => "action_select"
+- p_name = tab_form.parent_builder.object_name
+- m_data = tab_form.object_name.match(/\[(\d+)\]$/)
+- index = m_data && m_data[1]
+- param_attrs = params[p_name] && params[p_name]["urls_attributes"] && index && params[p_name]["urls_attributes"][index]
+- param_controller = param_attrs && param_attrs["controller"]
+- record_controller = param_controller || tab_form.object.controller 
+- record_action = param_attrs && param_attrs["action"] || tab_form.object.action 
+
+= tab_form.select :controller, controllers_options_for_select(record_controller), {:include_blank => true},:class => "controller_select"
+= tab_form.select :action, actions_options_for_select(record_controller, record_action),{:include_blank => true}, :class => "action_select"

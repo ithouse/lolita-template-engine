@@ -1,3 +1,4 @@
+= render_component "lolita/configuration/tab", :error_msg, :tab => resource.lolita.tabs.first
 = form_for resource, :html => {:id => "placeholders-form"} do |f|
   - tab_form(f) do
     = render_component "lolita/configuration/tab", :fields, :tab => tab_form.object.lolita.tabs.first
