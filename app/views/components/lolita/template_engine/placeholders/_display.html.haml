@@ -6,3 +6,5 @@
       = render_component "lolita/configuration/field", :label, :field => field
       = render_component "lolita/template_engine/placeholders", :grid, :placeholders => placeholders
   .clear
+:javascript
+  LayoutConfig.width = #{engine_current_layout && engine_current_layout.width || 0}

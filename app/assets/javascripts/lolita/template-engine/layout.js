@@ -1,3 +1,33 @@
+var LayoutConfig = {
+  width: false
+}
+
+function resize_elements($elements, change_dimensions){
+  if(parseInt(LayoutConfig.width) > 0){
+    var grid_width = $("#placeholders-form .placeholders-grid").eq(0).width();
+    var diff = grid_width / LayoutConfig.width
+    $elements.each(function(){
+      var $block = $(this);
+      var w = Math.floor(parseInt($block.attr("data-width")) * diff);
+      var h = Math.floor(parseInt($block.attr("data-height")) * diff);
+      $block.data("width",w)
+      $block.data("height",h);
+      if(change_dimensions){
+        $block.width(w).height(h)
+      }
+    })
+  }
+}
+
+function resize_all_elements(){
+  resize_elements($(".content-block.active"),true);
+  resize_elements($(".content-block.inactive"));
+  resize_elements($("#placeholders-form .placeholder"),true)
+}
+
+$(window).resize(function(){
+  resize_all_elements();
+})
 
 $(function(){
   var _activated_cb = [];
@@ -149,7 +179,8 @@ $(function(){
         }
       })
     ).then(function(){
-      initialize_placeholders();
+      //initialize_placeholders();
+      resize_all_elements();
       initialize_sortables() 
     })
   })
@@ -244,7 +275,7 @@ $(function(){
     }).disableSelection();
   }
   //Initialize placeholder dimensions
-  initialize_placeholders();
+  //initialize_placeholders();
   initialize_sortables();
 
    //Remove block on double click from placeholders

@@ -1,6 +1,5 @@
 .placeholders-grid{
   margin: 10px;
-  width: 700px;
 }
 #new-content-blocks{
   height: 100px;
@@ -10,6 +9,9 @@
 }
 #placeholders-form{
   overflow:auto;
+}
+#placeholders-form .field{
+  overflow: auto;
 }
 .placeholder{
   background-color: white;

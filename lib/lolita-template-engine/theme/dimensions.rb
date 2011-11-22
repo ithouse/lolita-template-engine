@@ -26,7 +26,7 @@ module Lolita
           cb_dimension = instance_variable_get(:"@#{dimension}")
           if l_dimension.to_i > 0 
             diff = GRID_WIDTH.to_f / layout.send(:width)
-            cb_dimension.to_f * diff
+            (cb_dimension.to_f * diff).floor
           else
             cb_dimension
           end

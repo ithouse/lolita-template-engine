@@ -1,5 +1,5 @@
 .placeholder{:class => placeholder.disabled ? "disabled" : "enabled", |
-  :"data-width" => placeholder.width(engine_current_layout), :"data-height" => placeholder.height(engine_current_layout), |
+  :"data-width" => placeholder.width(), :"data-height" => placeholder.height(), |
   :"data-stretch" => placeholder.stretch, |
   :"data-form" => (render_component("lolita/template_engine/placeholder", :nested_form, :placeholder => placeholder))}
   //.title

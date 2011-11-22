@@ -65,7 +65,7 @@ module Lolita
           @content_blocks = content_blocks
           raise ArgumentError, "Bad path for content block: #{@path}" unless File.exist?(@path)
           load_attributes
-          raise Lolita::TemplateEngine::Error, "Meta-information about block not specified. Add 'data-content-block' somewhere in #{@path}"
+          raise Lolita::TemplateEngine::Error, "Meta-information about block not specified. Add 'data-content-block' somewhere in #{@path}" unless @name
           @name = @name.blank? ? (name || ::File.basename(path).split(".").first.gsub(/^_/,"")) : @name
           @width = @width && @width.to_i
           @height = @height && @height.to_i
@@ -83,7 +83,6 @@ module Lolita
         private
 
         def load_attributes
-          
           f_processor = FileProcessor.new(self.path, "content-block", :custom_keys => [:single], :singular => true)
           f_processor.process
           (f_processor.results.first || []).each do |attr,value|

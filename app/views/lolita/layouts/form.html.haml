@@ -18,3 +18,6 @@
       %h1= t("Manage layout")
       .arrow
     = render_component "lolita/template_engine/placeholders",:display, :placeholders => existing_placeholders()
+:javascript
+  LayoutConfig.width = #{engine_current_layout && engine_current_layout.width || 0};
+  resize_all_elements();
