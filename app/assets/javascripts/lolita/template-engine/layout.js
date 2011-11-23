@@ -53,15 +53,16 @@ function get_grid_width(){
 function resize_elements($elements, change_dimensions){
   if(parseInt(LayoutConfig.width) > 0){
     var grid_width = get_grid_width()
-    if(LayoutConfig.init || grid_width!=LayoutConfig.prevGridWidth){
+    //if(LayoutConfig.init || grid_width!=LayoutConfig.prevGridWidth){
 
       LayoutConfig.prevGridWidth = grid_width
 
       var diff = grid_width / LayoutConfig.width
       $elements.each(function(){
         var $block = $(this);
-        var w = Math.floor(parseInt($block.attr("data-width")) * diff)-2;
-        var h = Math.floor(parseInt($block.attr("data-height")) * diff)-2;
+        var dimension_diff = 2
+        var w = Math.floor(parseInt($block.attr("data-width")) * diff)-dimension_diff;
+        var h = Math.floor(parseInt($block.attr("data-height")) * diff)-dimension_diff;
         $block.data("width",w)
         $block.data("height",h);
         if(change_dimensions){
@@ -73,7 +74,7 @@ function resize_elements($elements, change_dimensions){
           }
         }
       })
-    }
+    //}
     return $elements
   }
 }
@@ -95,7 +96,7 @@ function get_max_font_size($i,o_w,o_h){
 
 function center_spans($blocks){
   var grid_width = get_grid_width();
-  if($blocks || LayoutConfig.init || grid_width!=LayoutConfig.prevGridWidth ){
+  //if($blocks || LayoutConfig.init || grid_width!=LayoutConfig.prevGridWidth ){
 
     LayoutConfig.prevGridWidth = grid_width;
 
@@ -112,7 +113,7 @@ function center_spans($blocks){
       var top = Math.max(0, (($p.data("height") - $s.height())/2))
       $s.css("top",top+"px")
     })
-  }
+  //}
 }
 
 function resize_all_elements(){
@@ -121,11 +122,12 @@ function resize_all_elements(){
   resize_elements($(".content-block.active"),true);
   resize_elements($(".content-block.inactive"));
   center_spans()
+  resize_elements($("#placeholders-form .placeholder"),true)
   LayoutConfig.init = false
 }
 
 $(window).resize(function(){
-  //resize_all_elements();
+  resize_all_elements();
 })
 
 $(function(){
@@ -149,7 +151,7 @@ $(function(){
   //When placeholder are allowed to stretch vertically or horizontally then checking of height or width are skipped.
   function fit_in_placeholder(placeholder,content_block){
     if(block_meant_for_placeholder(placeholder,content_block)){
-      var p_width = placeholder.width() ;
+      var p_width = parseInt(placeholder.attr("data-width")) ;
       var p_height = placeholder.height();
       var p_stretch = placeholder.data("stretch")
       var result = true
@@ -157,9 +159,9 @@ $(function(){
         result = result && p_height <=parseInt(placeholder.data("height"))
       }
       if(p_stretch!="horizontally"){
-        result = result && content_block.width() <= p_width && p_width <= parseInt(placeholder.data("width"))
+        result = result && content_block.attr("data-width") <= p_width && placeholder.width() <= parseInt(placeholder.data("width"))
       }else{
-        if(content_block.width() > p_width){
+        if(content_block.width() > placeholder.width()){
           placeholder.width(content_block.width())
         }
       }

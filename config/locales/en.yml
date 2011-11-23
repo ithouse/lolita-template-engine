@@ -1,4 +1,5 @@
 en:
+  or: or
   "lolita-template-engine":
     layouts: "Layouts"
     "content blocks": Content blocks
@@ -13,3 +14,8 @@ en:
       lolita_layout_url:
         one: "URL"
         other: "URLs"
+    attributes:
+      lolita_layout_configuration:
+        urls: "URL's (path or controller,action)"
+        title: Title
+        placeholders: Placeholders

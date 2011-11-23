@@ -1,4 +1,5 @@
 lv:
+  or: "vai"
   "lolita-template-engine":
     "layouts": "Izkārtojumi"
     "content blocks": Satura bloki
@@ -13,3 +14,8 @@ lv:
       lolita_layout_url:
         one: "Saiti"
         other: "Saites"
+    attributes:
+      lolita_layout:
+        urls: "URL's (ceļš vai kontrolieris, darbība)"
+        title: Virsraksts
+        placeholders: Vietturi
