@@ -5,6 +5,6 @@
 - param_controller = param_attrs && param_attrs["controller"]
 - record_controller = param_controller || tab_form.object.controller 
 - record_action = param_attrs && param_attrs["action"] || tab_form.object.action 
-
+= t("or")
 = tab_form.select :controller, controllers_options_for_select(record_controller), {:include_blank => true},:class => "controller_select"
 = tab_form.select :action, actions_options_for_select(record_controller, record_action),{:include_blank => true}, :class => "action_select"

@@ -255,6 +255,10 @@ $(function(){
         if(html==""){
           $("#content-blocks-container").remove()
         }else{
+          var $sibling = $("#content-blocks-container")
+          if($sibling){
+            $sibling.remove();
+          }
           $(html).insertAfter("#themes-select")
           set_layout_form_data(current_theme)
         }

@@ -30,7 +30,7 @@ class LolitaContentBlock < ActiveRecord::Base
           theme.layouts.map{|ln,layout| 
             layout.placeholders.names
           }
-        }.flatten.map{|n| [n.humanize,n]}.sort
+        }.flatten.uniq.map{|n| [n.humanize,n]}.sort
         options_for_select(all_placeholder_names)
       end
     end
