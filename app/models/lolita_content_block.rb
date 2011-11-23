@@ -2,6 +2,7 @@ class LolitaContentBlock < ActiveRecord::Base
   include Lolita::Configuration
   has_many :layout_configurations, :class_name => "LolitaLayoutConfiguration", :dependent => :destroy
  # has_many :layouts, :through => :layout_configurations, :class_name => "LolitaLayout"
+  after_save :clean_configuration
   validates :width,:height,:name,:body, :presence => true
 
   lolita do
@@ -29,7 +30,7 @@ class LolitaContentBlock < ActiveRecord::Base
           theme.layouts.map{|ln,layout| 
             layout.placeholders.names
           }
-        }.flatten.sort
+        }.flatten.map{|n| [n.humanize,n]}.sort
         options_for_select(all_placeholder_names)
       end
     end
@@ -56,6 +57,30 @@ class LolitaContentBlock < ActiveRecord::Base
   end
 
   private
+
+  def clean_configuration
+    self.layout_configurations.each do |lc|
+      if theme = Lolita.themes.theme(lc.lolita_layout && lc.lolita_layout.theme_name)
+        if self.theme_name.present? && self.theme_name!=theme.name
+          lc.destroy
+          next
+        end
+        placeholder = nil
+        theme.layouts.each{|n,layout| 
+          layout.placeholders.each{|n,p_holder| 
+            placeholder = p_holder if p_holder.name == lc.placeholder_name
+          }
+        } 
+        if placeholder
+          if (self.width > placeholder.width && placeholder.stretch.to_s!="horizontally") ||
+            (self.height > placeholder.width && placeholder.stretch.to_s!="vertically") ||
+            self.placeholder_name.present? && placeholder.name!=self.name
+            lc.destroy
+          end
+        end
+      end
+    end
+  end
 
   def parse_options
     opt_nr = self.options

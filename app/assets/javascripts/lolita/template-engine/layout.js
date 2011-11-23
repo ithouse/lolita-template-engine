@@ -298,6 +298,7 @@ $(function(){
         }
       })
     ).then(function(){
+      LayoutConfig.init = true
       resize_all_elements();
       initialize_sortables() 
     })
