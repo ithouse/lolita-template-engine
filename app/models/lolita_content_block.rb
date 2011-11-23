@@ -18,10 +18,10 @@ class LolitaContentBlock < ActiveRecord::Base
       field :name
       field :body, :string,:builder => :text, :simple => true
       field :width, :integer do
-        title "#{LolitaContentBlock.model_name.human} (#{self.dbi.klass.placeholders.map(&:width).sort.uniq.join(", ")})"
+        title "#{LolitaContentBlock.human_attribute_name("width")} (#{self.dbi.klass.placeholders.map(&:width).sort.uniq.join(", ")})"
       end
       field :height, :integer, do 
-        title "#{LolitaContentBlock.model_name.human} (#{self.dbi.klass.placeholders.map(&:height).sort.uniq.join(", ")})"
+        title "#{LolitaContentBlock.human_attribute_name("height")} (#{self.dbi.klass.placeholders.map(&:height).sort.uniq.join(", ")})"
       end
       field :theme_name, :array do
         include_blank "-Theme-"
