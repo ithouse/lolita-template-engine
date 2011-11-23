@@ -100,7 +100,7 @@ function center_spans($blocks){
 
     LayoutConfig.prevGridWidth = grid_width;
 
-    ($blocks || $(".content-block.active span")).each(function(){
+    ($blocks || $(".content-block.active span:first-child")).each(function(){
       var $s = $(this)//.children("span").eq(0)
       var $p = $(this).parent();
       var $p_w = parseInt($p.data("width") - $p.data("width") * 0.1)
@@ -175,7 +175,7 @@ $(function(){
   function reset_block($block){
     $block.removeClass("active");
     $block.addClass("inactive");
-    $block.children("span").css({"font-size":_default_font_size,opacity:1})
+    $block.children("span:first").css({"font-size":_default_font_size,opacity:1})
     $block.height($block.data("old-height"));
     $block.width($block.data("old-width"))
     return $block
@@ -390,7 +390,7 @@ $(function(){
           $block.unbind("mousedown");
           add_form_data($p_holder,$block);
           add_clone($clone) 
-          center_spans($block.children("span"))
+          center_spans($block.children("span:first"))
         }else{
           $(this).sortable("cancel");
           reset_block($block)
@@ -403,14 +403,15 @@ $(function(){
   initialize_sortables();
 
    //Remove block on double click from placeholders
-  $(".content-block.active").live("dblclick",function(){
-    var clones = collect_removed_elements($(this),true)
-    var $id = $(this).next()
+  $(".content-block.active span.delete").live("click",function(){
+    var $block = $(this).parent()
+    var clones = collect_removed_elements($block,true)
+    var $id = $block.next()
     if($id[0] && $id[0].tagName.toLowerCase()=="input" && $id.attr("id").match(/_id$/)){
       $id.remove()
     }
-    var $placeholder = $(this).parents(".placeholder").eq(0)
-    $(this).remove();
+    var $placeholder = $block.parents(".placeholder").eq(0)
+    $block.remove();
     remove_blocks(clones)
     rebuild_order_numbers_for($placeholder)
   })
@@ -428,7 +429,7 @@ $(function(){
       $new_block.addClass("active")
       $new_block.width($new_block.data("width"))
       $new_block.height($new_block.data("height"))
-      center_spans($new_block.find("span"))
+      center_spans($new_block.find("span:first"))
     }
   })
 

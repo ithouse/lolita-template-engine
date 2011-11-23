@@ -17,8 +17,12 @@ class LolitaContentBlock < ActiveRecord::Base
     tab(:content) do
       field :name
       field :body, :string,:builder => :text, :simple => true
-      field :width, :integer
-      field :height, :integer
+      field :width, :integer do
+        title "#{LolitaContentBlock.model_name.human} (#{self.dbi.klass.placeholders.map(&:width).sort.uniq.join(", ")})"
+      end
+      field :height, :integer, do 
+        title "#{LolitaContentBlock.model_name.human} (#{self.dbi.klass.placeholders.map(&:height).sort.uniq.join(", ")})"
+      end
       field :theme_name, :array do
         include_blank "-Theme-"
         options_for_select(Lolita.themes.names.sort.map{|n| [n.humanize,n]})
@@ -26,17 +30,25 @@ class LolitaContentBlock < ActiveRecord::Base
 
       field :placeholder_name, :array do
         include_blank "-Placeholder-"
-        all_placeholder_names = Lolita.themes.map{|n,theme| 
-          theme.layouts.map{|ln,layout| 
-            layout.placeholders.names
-          }
-        }.flatten.uniq.map{|n| [n.humanize,n]}.sort
-        options_for_select(all_placeholder_names)
+        options_for_select(self.dbi.klass.placeholder_names.uniq.map{|n| [n.humanize,n]}.sort)
       end
     end
   end
 
   class << self
+
+    def placeholders
+      all_placeholder_names = Lolita.themes.map{|n,theme| 
+        theme.layouts.map{|ln,layout| 
+          layout.placeholders.map{|n,ph| ph}
+        }
+      }.flatten
+    end
+
+    def placeholder_names
+      self.placeholders.map(&:name)
+    end
+
     def all_with(theme)
       blocks = self.arel_table
       self.where(without_theme(blocks).or(with_theme(blocks,theme)))

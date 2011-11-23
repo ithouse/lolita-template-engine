@@ -1,2 +1,3 @@
 .content-block{content_block_html_options(content_block)} 
   %span= content_block.name.humanize
+  %span{:class=>"delete"}= image_tag("lolita/trash-small.png")

@@ -1,4 +1,5 @@
 - content_block = tab_form.object.content_block
 .content-block{content_block_html_options(content_block,:active => true)}
   %span= content_block.name.humanize
+  %span{:class=>"delete"}= image_tag("lolita/trash-small.png")
   = render_component "lolita/template_engine/placeholder", :nested_fields
