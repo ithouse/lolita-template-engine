@@ -44,6 +44,7 @@
 .content-block.active span{
   font-weight: bold;
   position:relative;
+  height: auto;
 }
 .content-block.inactive{
 
@@ -54,5 +55,5 @@
   height:0 !important;
 }
 .inner-placeholder{
-  background-color: #d9d9d9;
+  background-color: red;
 }

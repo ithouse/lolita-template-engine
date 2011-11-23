@@ -1,5 +1,7 @@
 var LayoutConfig = {
-  width: false
+  width: false,
+  prevGridWidth: 0,
+  init: true
 }
 function windowScrollDimensions(){
   var i = document.createElement('p');
@@ -34,46 +36,83 @@ function windowScrollDimensions(){
   window.scrollbarHeight = h1-h2;
 }
 
+function isPlaceholder($element){
+  return $element.hasClass("placeholder")
+}
+
+function get_grid_width(){
+  var $grid = $("#placeholders-form .placeholders-grid")
+    
+  var grid_width = $grid.eq(0).width();
+  if($(window).height() >= $(document).height()){
+    grid_width = grid_width - window.scrollbarWidth
+  }  
+  return grid_width
+}
+
 function resize_elements($elements, change_dimensions){
   if(parseInt(LayoutConfig.width) > 0){
-    var $grid = $("#placeholders-form .placeholders-grid")
-    
-    var grid_width = $grid.eq(0).width();
-    if($(window).height() >= $(document).height()){
-      grid_width = grid_width - window.scrollbarWidth
+    var grid_width = get_grid_width()
+    if(LayoutConfig.init || grid_width!=LayoutConfig.prevGridWidth){
+
+      LayoutConfig.prevGridWidth = grid_width
+
+      var diff = grid_width / LayoutConfig.width
+      $elements.each(function(){
+        var $block = $(this);
+        var w = Math.floor(parseInt($block.attr("data-width")) * diff)-2;
+        var h = Math.floor(parseInt($block.attr("data-height")) * diff)-2;
+        $block.data("width",w)
+        $block.data("height",h);
+        if(change_dimensions){
+          $block.width(w)
+          if(isPlaceholder($block)){
+            $block.css("min-height", h)
+          }else{
+            $block.height(h) 
+          }
+        }
+      })
     }
-    var diff = grid_width / LayoutConfig.width
-    $elements.each(function(){
-      var $block = $(this);
-      var w = Math.floor(parseInt($block.attr("data-width")) * diff)-2;
-      var h = Math.floor(parseInt($block.attr("data-height")) * diff)-2;
-      $block.data("width",w)
-      $block.data("height",h);
-      if(change_dimensions){
-        $block.width(w).height(h)
-      }
-    })
     return $elements
   }
 }
 
+function get_max_font_size($i,o_w,o_h){
+  var c_f_size = parseInt($i.css("font-size"));
+  var i_h = $i.height();
+  var i_w = $i.width();
+  $i.css("font-size",c_f_size+10+"px")
+  var n_i_h = $i.height()
+  var n_i_w = $i.width()
+  var f_h_diff = (n_i_h-i_h) / 10
+  var f_w_diff = (n_i_w - i_w) / 10
+  var h_diff = o_h - i_h;
+  var w_diff = o_w - i_w;
+  var max_mult = Math.min(Math.floor(w_diff / f_w_diff), Math.floor(h_diff / f_h_diff))
+  return max_mult + c_f_size
+}
+
 function center_spans($blocks){
-  ($blocks || $(".content-block.active span")).each(function(){
-    var $s = $(this)//.children("span").eq(0)
-    var $p = $(this).parent();
-    var $p_w = parseInt($p.data("width") - $p.data("width") * 0.1)
-    $s.css({opacity:0.1})
-    var last_size = 8
-    var f_size = 8
-    $s.css("font-size",f_size);
-    while($s.width()<$p_w){
-      $s.css("font-size",f_size);
-      last_size = f_size
-      f_size = f_size + 1
-    }
-    $s.css("font-size", last_size)
-    $s.css("top",(($p.data("height") - $s.height())/2)+"px")
-  })
+  var grid_width = get_grid_width();
+  if($blocks || LayoutConfig.init || grid_width!=LayoutConfig.prevGridWidth ){
+
+    LayoutConfig.prevGridWidth = grid_width;
+
+    ($blocks || $(".content-block.active span")).each(function(){
+      var $s = $(this)//.children("span").eq(0)
+      var $p = $(this).parent();
+      var $p_w = parseInt($p.data("width") - $p.data("width") * 0.1)
+      var $p_h = $p.data("height")
+      $s.css({opacity:0.1})
+      $s.css("font-size",8);
+      var new_f_size = get_max_font_size($s,$p_w,$p_h)
+      
+      $s.css("font-size", new_f_size)
+      var top = Math.max(0, (($p.data("height") - $s.height())/2))
+      $s.css("top",top+"px")
+    })
+  }
 }
 
 function resize_all_elements(){
@@ -82,10 +121,11 @@ function resize_all_elements(){
   resize_elements($(".content-block.active"),true);
   resize_elements($(".content-block.inactive"));
   center_spans()
+  LayoutConfig.init = false
 }
 
 $(window).resize(function(){
-  resize_all_elements();
+  //resize_all_elements();
 })
 
 $(function(){
@@ -95,6 +135,7 @@ $(function(){
   var _all_ph_class = ".placeholder"
   var _disabled_ph_class = ".placeholder.disabled"
   var _form_class = "#placeholders-form"
+  var _default_font_size = 13;
   
   function is_existing_layout(){
     $(".tabs").data("method") == "PUT"
@@ -124,7 +165,8 @@ $(function(){
   //Reset content block look
   function reset_block($block){
     $block.removeClass("active");
-    $block.addClass("inactive")
+    $block.addClass("inactive");
+    $block.children("span").css({"font-size":_default_font_size,opacity:1})
     $block.height($block.data("old-height"));
     $block.width($block.data("old-width"))
     return $block
@@ -367,6 +409,7 @@ $(function(){
     $new_block.addClass("active")
     $new_block.width($new_block.data("width"))
     $new_block.height($new_block.data("height"))
+    center_spans($new_block.find("span"))
   })
 
   // When user pressed mouse button and didn't start draging content block it is restored to its previous 
