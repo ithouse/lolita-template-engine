@@ -123,6 +123,7 @@ function resize_all_elements(){
   resize_elements($(".content-block.inactive"));
   center_spans()
   resize_elements($("#placeholders-form .placeholder"),true)
+  //$(".content-block span.delete")
   LayoutConfig.init = false
 }
 
