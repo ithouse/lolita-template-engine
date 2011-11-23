@@ -1,3 +1,2 @@
-.content-block{:class => "inactive", :"data-name" => content_block.name, |
-:"data-width" => content_block.width(), :"data-height" => content_block.height()} 
+.content-block{content_block_html_options(content_block)} 
   %span= content_block.name.humanize

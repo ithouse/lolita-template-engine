@@ -141,25 +141,32 @@ $(function(){
     $(".tabs").data("method") == "PUT"
   }
 
+  function block_meant_for_placeholder($p_holder,$block){
+    return ($block.hasClass("fit-in-all") || $block.hasClass($p_holder.data("name")))
+  }
+
   //Check if content block fits in placeholder.
   //When placeholder are allowed to stretch vertically or horizontally then checking of height or width are skipped.
   function fit_in_placeholder(placeholder,content_block){
-   
-    var p_width = placeholder.width() ;
-    var p_height = placeholder.height();
-    var p_stretch = placeholder.data("stretch")
-    var result = true
-    if(p_stretch!="vertically"){
-      result = result && p_height <=parseInt(placeholder.data("height"))
-    }
-    if(p_stretch!="horizontally"){
-      result = result && content_block.width() <= p_width && p_width <= parseInt(placeholder.data("width"))
-    }else{
-      if(content_block.width() > p_width){
-        placeholder.width(content_block.width())
+    if(block_meant_for_placeholder(placeholder,content_block)){
+      var p_width = placeholder.width() ;
+      var p_height = placeholder.height();
+      var p_stretch = placeholder.data("stretch")
+      var result = true
+      if(p_stretch!="vertically"){
+        result = result && p_height <=parseInt(placeholder.data("height"))
       }
+      if(p_stretch!="horizontally"){
+        result = result && content_block.width() <= p_width && p_width <= parseInt(placeholder.data("width"))
+      }else{
+        if(content_block.width() > p_width){
+          placeholder.width(content_block.width())
+        }
+      }
+      return result 
+    }else{
+      return false
     }
-    return result
   }
  
   //Reset content block look
@@ -322,7 +329,11 @@ $(function(){
     var regexp = new RegExp("new_" + "layout_configurations", "g")
     form_data = form_data.replace(regexp,new_id)
     $block.append(form_data)
-    $block.children("input[id*='predefined_block_name']").eq(0).val($block.data("name"))
+    if($block.data("content-block-id")){
+      $block.children("input[id*='lolita_content_block_id']").eq(0).val($block.data("content-block-id"))
+    }else{
+      $block.children("input[id*='predefined_block_name']").eq(0).val($block.data("name")) 
+    }
     rebuild_order_numbers_for($placeholder)
   }
 
@@ -399,17 +410,19 @@ $(function(){
 
   //When user press mouse button on contenblock in list it is changed to its real look. 
   // Also some information about original position in list and dimensions are stored.
-  $("#content-blocks .content-block").live("mousedown",function(){
-    var $new_block = $(this)
-    _activated_cb.push(this)
-    $new_block.data("domPositionPrev",$new_block.prev()[0] ? true : false)
-    $new_block.data("domPositionObj", $new_block.prev()[0] ? $new_block.prev() :  $new_block.parent())
-    $new_block.data("old-width",$new_block.data("old-width") || $new_block.width()).data("old-height",$new_block.data("old-height") || $new_block.height())
-    $new_block.removeClass("inactive")
-    $new_block.addClass("active")
-    $new_block.width($new_block.data("width"))
-    $new_block.height($new_block.data("height"))
-    center_spans($new_block.find("span"))
+  $("#content-blocks .content-block").live("mousedown",function(event){
+    if(event.which == 1){
+      var $new_block = $(this)
+      _activated_cb.push(this)
+      $new_block.data("domPositionPrev",$new_block.prev()[0] ? true : false)
+      $new_block.data("domPositionObj", $new_block.prev()[0] ? $new_block.prev() :  $new_block.parent())
+      $new_block.data("old-width",$new_block.data("old-width") || $new_block.width()).data("old-height",$new_block.data("old-height") || $new_block.height())
+      $new_block.removeClass("inactive")
+      $new_block.addClass("active")
+      $new_block.width($new_block.data("width"))
+      $new_block.height($new_block.data("height"))
+      center_spans($new_block.find("span"))
+    }
   })
 
   // When user pressed mouse button and didn't start draging content block it is restored to its previous 

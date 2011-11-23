@@ -89,7 +89,6 @@ require 'lolita-template-engine/module'
 # All about themes
 require 'lolita-template-engine/themes'
 require 'lolita-template-engine/theme'
-require 'lolita-template-engine/theme/dimensions'
 require 'lolita-template-engine/theme/layouts'
 require 'lolita-template-engine/theme/placeholders'
 require 'lolita-template-engine/theme/content_blocks'

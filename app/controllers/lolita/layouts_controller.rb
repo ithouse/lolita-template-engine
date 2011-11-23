@@ -3,7 +3,7 @@ class Lolita::LayoutsController < Lolita::TemplateEngineController
   def show
     self.resource = LolitaLayout.new(:theme_name => params[:theme_id], :name => params[:id])
     if engine_current_theme 
-      placeholders = engine_current_layout && engine_current_layout.placeholders || []
+      placeholders = existing_placeholders
       render_component "lolita/template_engine/placeholders", :display, :placeholders => placeholders
     else
       render :nothing => true, :layout => false
@@ -22,7 +22,9 @@ class Lolita::LayoutsController < Lolita::TemplateEngineController
   def content_blocks
     self.resource = LolitaLayout.new(:theme_name => params[:theme_id], :name => params[:id])
     if engine_current_layout
-      render_component "lolita/template_engine/content_blocks", :display, :content_blocks => engine_current_theme.content_blocks
+      render_component "lolita/template_engine/content_blocks", :display, 
+        :content_blocks => existing_content_blocks,
+        :user_blocks => existing_user_blocks
     else
       render :text => "", :layout => false
     end

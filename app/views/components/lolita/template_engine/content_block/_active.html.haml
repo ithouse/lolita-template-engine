@@ -1,6 +1,4 @@
 - content_block = tab_form.object.content_block
-.content-block{:class => "active", :"data-name" => content_block.name, |
- :"data-width" => content_block.width(), :"data-height" => content_block.height(), |
-  :style => "height:#{content_block.height()}px;width:#{content_block.width()}px"}
+.content-block{content_block_html_options(content_block,:active => true)}
   %span= content_block.name.humanize
   = render_component "lolita/template_engine/placeholder", :nested_fields

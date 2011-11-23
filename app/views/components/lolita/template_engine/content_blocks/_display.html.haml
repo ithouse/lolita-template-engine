@@ -1,2 +1,6 @@
 - content_blocks.each do |name,content_block|
   = render_component "lolita/template_engine/content_block", :display, :content_block => content_block
+%hr
+- user_blocks.each do |user_content_block|
+  = render_component "lolita/template_engine/content_block", :display, :content_block => user_content_block
+= link_to t(".New content block"), new_lolita_resource_path(Lolita.mappings[:content_block])

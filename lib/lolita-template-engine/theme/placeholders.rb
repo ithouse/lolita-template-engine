@@ -51,8 +51,7 @@ module Lolita
 
       class Placeholder
 
-        include Theme::Dimensions
-        attr_reader :name,:disabled,:stretch,:options, :placeholders
+        attr_reader :name,:disabled,:stretch,:options, :placeholders, :width, :height
 
         def initialize(options)
           @placeholders = options[:placeholders]

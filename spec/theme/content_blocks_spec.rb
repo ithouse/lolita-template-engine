@@ -42,7 +42,7 @@ describe Lolita::TemplateEngine::Theme::ContentBlocks do
     it "should raise error when dimensions is not specified " do
       expect{
         Lolita::TemplateEngine::Theme::ContentBlock.new(File.join(theme.paths.content_blocks,"support_files","other_file.html.erb"))
-      }.to raise_error(ArgumentError, /Dimensions must be specified through/)
+      }.to raise_error(Lolita::TemplateEngine::Error, /Meta-information about block/)
     end
   end
 end

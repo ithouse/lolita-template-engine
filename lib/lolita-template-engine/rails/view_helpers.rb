@@ -26,9 +26,16 @@ module Lolita
       def render_content_blocks(placeholder)
         result = ""
         lolita_layout.content_blocks_for_placeholder(placeholder).each do |cb|
-          
-          locals = {:"#{cb.name}" => current_theme.presenter.send(:"#{cb.name}")}
-          result += render(:partial => cb.view_path, :locals => locals)
+          if current_theme.presenter.respond_to?(:"#{cb.name}")
+            locals = {:"#{cb.name}" => current_theme.presenter.send(:"#{cb.name}")}
+          else
+            warn "Method #{cb.name} is not defined in #{current_theme.presenter.class}"
+          end
+          result += if cb.is_a?(LolitaContentBlock)
+            raw(cb.body)
+          else
+            render(:partial => cb.view_path, :locals => locals)
+          end
         end
         raw(result)
       end

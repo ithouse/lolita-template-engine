@@ -57,8 +57,7 @@ module Lolita
       end
 
       class ContentBlock
-        include Theme::Dimensions
-        attr_reader :name,:single, :path
+        attr_reader :name,:single, :path, :width, :height
 
         def initialize(path,name = nil,content_blocks = nil)
           @path = path

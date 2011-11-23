@@ -1,9 +1,10 @@
 #content-blocks-container
   #layouts-select
     - layouts = [["-Layouts-",nil]]
-    - engine_current_theme.layouts.each{|name,llayout| layouts << [llayout.human_name,llayout.system_name]}
+    - system_layouts = engine_current_theme.layouts.map{|name,llayout| [llayout.human_name,llayout.system_name]}
+    - layouts += system_layouts.sort{|a,b| a[0]<=>b[0]}
     = select_tag "current_layout", options_for_select(layouts,engine_current_layout && engine_current_layout.system_name), |
       :"data-url" => lolita_theme_layout_path(:theme_id=>"-theme-",:id => "-layout-"), |
       :"data-blocks-url" => content_blocks_lolita_theme_layout_path(:theme_id => "-theme-", :id => "-layout-")
   #content-blocks
-    = render_component "lolita/template_engine/content_blocks", :display, :content_blocks => existing_content_blocks
+    = render_component "lolita/template_engine/content_blocks", :display, :content_blocks => existing_content_blocks, :user_blocks => existing_user_blocks
