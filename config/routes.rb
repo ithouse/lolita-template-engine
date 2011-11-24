@@ -13,7 +13,6 @@ Rails.application.routes.draw do
     end
   end
 
-  lolita_for :layouts, :class_name => "LolitaLayout", 
-    :only => [:index,:destroy], :controller => "lolita/layouts", :append_to => "layouts"
+  lolita_for :layouts, :class_name => "LolitaLayout", :controller => "lolita/layouts", :append_to => "layouts"
   lolita_for :content_blocks, :class_name => "LolitaContentBlock", :append_to => "layouts" 
 end
