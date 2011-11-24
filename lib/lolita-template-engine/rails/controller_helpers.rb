@@ -7,12 +7,12 @@ module Lolita
         hide_action *helpers
        
         helper_method *helpers
-        before_filter :set_current_layout
+        #before_filter :set_current_layout
       end
 
       def render *args, &block
         if self.current_layout && (!args || args.empty?)
-          super({:nothing => true, :layout => true})
+          super({:nothing => true, :layout => self.current_layout.relative_path})
         else
           super
         end
@@ -46,13 +46,13 @@ module Lolita
 
       private
 
-      def set_current_layout
-        if self.current_layout
-          self.class.send(:layout, self.current_layout.relative_path)
-        else
-          self.class.send(:layout, :default => true)
-        end
-      end
+      # def set_current_layout
+      #   if self.current_layout
+      #     self.class.send(:layout, self.current_layout.relative_path)
+      #   elsif 
+      #     self.class.send(:layout, :default => true)
+      #   end
+      # end
 
       def find_layout_by_url
         self.lolita_layout ||= LolitaLayout.recognize_from(current_theme,request)
