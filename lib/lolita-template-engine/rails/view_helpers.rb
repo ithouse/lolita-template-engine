@@ -27,7 +27,7 @@ module Lolita
         result = ""
         lolita_layout.content_blocks_for_placeholder(placeholder).each do |cb|
           if current_theme.presenter.respond_to?(:"#{cb.name}")
-            locals = {:"#{cb.name}" => current_theme.presenter.send(:"#{cb.name}")}
+            locals = {:"#{cb.name}" => current_theme.presenter.send(:"#{cb.name}"), :presenter => current_theme.presenter}
           else
             warn "Method #{cb.name} is not defined in #{current_theme.presenter.class}"
           end

@@ -40,6 +40,7 @@ function isPlaceholder($element){
   return $element.hasClass("placeholder")
 }
 
+//Calculate grid width
 function get_grid_width(){
   var $grid = $("#placeholders-form .placeholders-grid")
     
@@ -50,6 +51,8 @@ function get_grid_width(){
   return grid_width
 }
 
+//Goes through all given elements and calculate they relative dimensions based on grid width.
+//Store information inside block and change dimensions if neccessary
 function resize_elements($elements, change_dimensions){
   if(parseInt(LayoutConfig.width) > 0){
     var grid_width = get_grid_width()
@@ -79,6 +82,7 @@ function resize_elements($elements, change_dimensions){
   }
 }
 
+//Calculate max possible font size for given element and parent element width and height.
 function get_max_font_size($i,o_w,o_h){
   var c_f_size = parseInt($i.css("font-size"));
   var i_h = $i.height();
@@ -94,6 +98,7 @@ function get_max_font_size($i,o_w,o_h){
   return max_mult + c_f_size
 }
 
+//Resize content blocks names that they fill smallest of dimensions and also center vertically it.
 function center_spans($blocks){
   var grid_width = get_grid_width();
   //if($blocks || LayoutConfig.init || grid_width!=LayoutConfig.prevGridWidth ){
@@ -116,6 +121,8 @@ function center_spans($blocks){
   //}
 }
 
+// Goes through all placeholders and active content blocks and changes their attributes and dimensions.
+// For inactive content blocks changes attributes but not dimensions and center spans inside active content blocks.
 function resize_all_elements(){
   //var $active_blocks = $(".content-block.active")
   resize_elements($("#placeholders-form .placeholder"),true)
@@ -144,6 +151,7 @@ $(function(){
     $(".tabs").data("method") == "PUT"
   }
 
+  //Detect if block is meant for placeholder, e.g., some blocks may be meant for specifict placeholders
   function block_meant_for_placeholder($p_holder,$block){
     return ($block.hasClass("fit-in-all") || $block.hasClass($p_holder.data("name")))
   }

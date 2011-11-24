@@ -3,6 +3,9 @@ en:
   "lolita-template-engine":
     layouts: "Layouts"
     "content blocks": Content blocks
+  lolita:
+    navigation:
+      layouts: "Templates"
   activerecord:
     models:
       lolita_content_block: 

@@ -3,6 +3,9 @@ lv:
   "lolita-template-engine":
     "layouts": "Izkārtojumi"
     "content blocks": Satura bloki
+  lolita:
+    navigation:
+      layouts: "Šabloni"
   activerecord:
     models:
       lolita_content_block: 
