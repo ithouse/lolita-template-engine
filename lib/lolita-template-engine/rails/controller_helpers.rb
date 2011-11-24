@@ -49,6 +49,8 @@ module Lolita
       def set_current_layout
         if self.current_layout
           self.class.send(:layout, self.current_layout.relative_path)
+        else
+          self.class.send(:layout, :default => true)
         end
       end
 

@@ -12,14 +12,14 @@ class Lolita::TemplateEngineController < Lolita::RestController
   end
   
   def existing_content_blocks
-    engine_current_layout && engine_current_theme.content_blocks.sort{|a,b| a[0]<=>b[0]} || []
+    (engine_current_layout && engine_current_theme.content_blocks.sort{|a,b| a[0]<=>b[0]} || [])
   end
 
   def existing_placeholders
-    engine_current_layout && engine_current_layout.placeholders || []
+    (engine_current_layout && engine_current_layout.placeholders || [])
   end
 
   def existing_user_blocks
-    LolitaContentBlock.all_with(engine_current_theme)
+    (LolitaContentBlock.all_with(engine_current_theme) || []).compact
   end
 end

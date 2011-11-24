@@ -3,16 +3,18 @@ module Lolita
 
     def content_block_html_options(content_block,options={})
       html_options = {}
-      if content_block.is_a?(LolitaContentBlock)
-        special_classes = content_block.placeholder_name.gsub(",", " ")
-        html_options[:"data-content-block-id"] = content_block.id
+      if content_block
+        if content_block.is_a?(LolitaContentBlock)
+          special_classes = content_block.placeholder_name.gsub(",", " ")
+          html_options[:"data-content-block-id"] = content_block.id
+        end
+        html_options.merge!({
+          :class => "#{options[:active] ? "active" : "inactive"} #{special_classes.blank? ? "fit-in-all" : special_classes}",
+          :"data-name" => content_block.name, 
+          :"data-width" => content_block.width(),
+          :"data-height" => content_block.height(),
+        })
       end
-      html_options.merge!({
-        :class => "#{options[:active] ? "active" : "inactive"} #{special_classes.blank? ? "fit-in-all" : special_classes}",
-        :"data-name" => content_block.name, 
-        :"data-width" => content_block.width(),
-        :"data-height" => content_block.height(),
-      })
       html_options
     end
 

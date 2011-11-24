@@ -41,6 +41,10 @@ class Lolita::LayoutsController < Lolita::TemplateEngineController
     "lolita_layout"
   end
 
+  def resource_class
+    LolitaLayout
+  end
+  
   private
 
   def show_form
