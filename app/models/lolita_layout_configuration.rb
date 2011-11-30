@@ -13,4 +13,12 @@ class LolitaLayoutConfiguration < ActiveRecord::Base
     end
   end
 
+  def data_method
+    if self.data_collection_method.blank?
+      self.content_block.name
+    else
+      self.data_collection_method
+    end
+  end
+
 end

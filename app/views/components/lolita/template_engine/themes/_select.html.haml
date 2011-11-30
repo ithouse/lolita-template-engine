@@ -1,6 +1,4 @@
 #themes-select
-  - themes = [["-Themes-",nil]]
-  - themes += Lolita.themes.map{|name, theme| [theme.human_name,theme.name]}.sort{|a,b| a[0]<=>b[0]}
-  = select_tag "current_theme", options_for_select(themes, engine_current_theme && engine_current_theme.name), :"data-url" => select_lolita_theme_layouts_path(:theme_id=>"-theme-")
+  = select_tag "current_theme", options_for_select(themes_for_select, engine_current_theme && engine_current_theme.name), :"data-url" => select_lolita_theme_layouts_path(:theme_id=>"-theme-")
 - if resource.theme && resource.layout
   = render_component "lolita/template_engine/layouts", :select

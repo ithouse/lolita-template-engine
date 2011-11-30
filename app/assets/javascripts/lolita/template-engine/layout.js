@@ -279,6 +279,7 @@ $(function(){
       }
     })
   })
+
   $("#layouts-select select").live("change",function(){
     var theme = $("#themes-select select>option:selected").eq(0).val()
     theme = theme != "" ? theme : "_empty_"
@@ -345,12 +346,24 @@ $(function(){
     var regexp = new RegExp("new_" + "layout_configurations", "g")
     form_data = form_data.replace(regexp,new_id)
     $block.append(form_data)
+    rebuild_content_block_form_data($block)
+    rebuild_order_numbers_for($placeholder)
+  }
+
+  function rebuild_content_block_form_data($block,attributes){
+    if(attributes){
+      for(var attr in attributes){
+        var input = $block.children("input[id*='"+attr+"']").eq(0)
+        if(input){
+          input.val(attributes[attr])
+        }
+      } 
+    }
     if($block.data("content-block-id")){
       $block.children("input[id*='lolita_content_block_id']").eq(0).val($block.data("content-block-id"))
     }else{
       $block.children("input[id*='predefined_block_name']").eq(0).val($block.data("name")) 
     }
-    rebuild_order_numbers_for($placeholder)
   }
 
   function initialize_sortables(){
@@ -424,6 +437,52 @@ $(function(){
     remove_blocks(clones)
     rebuild_order_numbers_for($placeholder)
   })
+
+  $(".content-block.active span.edit").live("click",function(){
+    var $block = $(this).parent()
+    var $dialog = $("#content-block-form")
+    var methods = [$block.data("name")]
+    var possible_methods = ($block.attr("data-methods") || "").split(",")
+    if(possible_methods[0]!=""){
+      var extra_methods = possible_methods
+    }else{
+      extra_methods = []
+    }
+    methods = methods.concat(extra_methods)
+    $dialog.data("block",$block)
+    $dialog.data("methods",methods)
+    $dialog.dialog("open")
+  })
+
+
+  var buttons = {}
+  buttons[$("#content-block-form").data("button-save")] = function(){
+    var $block = $(this).data("block")
+    var method_name = $(this).find("select>option:selected").eq(0).val()
+    rebuild_content_block_form_data($block,{"data_collection_method": method_name})
+    $( this ).dialog( "close" );
+  }
+  buttons[$("#content-block-form").data("button-cancel")] = function(){
+    $( this ).dialog( "close" );
+  }
+  $("#content-block-form" ).dialog({
+      autoOpen: false,
+      height: 150,
+      width: 300,
+      modal: true,
+      buttons: buttons,
+      open:function(){
+        var $select = $(this).find("form select")
+        $select.html("")
+        $.each($(this).data("methods"),function(index,method_name){
+          $select.append("<option value='"+method_name+"'>"+method_name+"</option>")
+        })
+      },
+      close: function() {
+        $(this).find("form select").html("")
+        //allFields.val( "" ).removeClass( "ui-state-error" );
+      }
+    });
 
   //When user press mouse button on contenblock in list it is changed to its real look. 
   // Also some information about original position in list and dimensions are stored.

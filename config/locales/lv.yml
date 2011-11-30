@@ -4,8 +4,19 @@ lv:
     "layouts": "Izkārtojumi"
     "content blocks": Satura bloki
   lolita:
+    template_engine:
+      "themes select default": "-Tēmas-"
+      "layouts select default": "-Izkārtojums-"
     navigation:
       layouts: "Šabloni"
+  components:
+    lolita:
+      template_engine:
+        content_block:
+          form:
+            "Choose data collection method": "Izvēlies datu savākšanas metodi"
+            "Save": "Saglabāt"
+            "Cancel": "Aizvērt"
   activerecord:
     models:
       lolita_content_block: 
@@ -22,3 +33,5 @@ lv:
         urls: "URL's (ceļš vai kontrolieris, darbība)"
         title: Virsraksts
         placeholders: Vietturi
+      lolita_layout_configuration:
+        data_collection_method: datu savākšanas metode

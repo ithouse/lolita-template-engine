@@ -52,8 +52,10 @@ class LolitaLayout < ActiveRecord::Base
   def content_blocks_for_placeholder(placeholder)
     blocks = []
     current_theme = self.theme
-    self.layout_configurations.where(:placeholder_name => placeholder.name).order("order_number ASC").map do |l_config|
-      l_config.content_block(current_theme)
-    end.compact
+    self.layout_configurations.where(:placeholder_name => placeholder.name).order("order_number ASC").each do |l_config|
+      if cb = l_config.content_block(current_theme)
+        yield cb, l_config
+      end
+    end
   end
 end

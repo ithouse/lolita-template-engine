@@ -4,8 +4,19 @@ en:
     layouts: "Layouts"
     "content blocks": Content blocks
   lolita:
+    template_engine:
+      "themes select default": "-Themes-"
+      "layouts select default": "-Layouts-"
     navigation:
       layouts: "Templates"
+  components:
+    lolita:
+      template_engine:
+        content_block:
+          form:
+            "Choose data collection method": "Izvēlies datu savākšanas metodi"
+            "Save": "Save"
+            "Cancel": "Close"
   activerecord:
     models:
       lolita_content_block: 
@@ -18,7 +29,9 @@ en:
         one: "URL"
         other: "URLs"
     attributes:
-      lolita_layout_configuration:
+      lolita_layout:
         urls: "URL's (path or controller,action)"
         title: Title
         placeholders: Placeholders
+      lolita_layout_configuration:
+        data_collection_method: "data collection method"

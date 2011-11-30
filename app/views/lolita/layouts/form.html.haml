@@ -1,8 +1,7 @@
 - content_for :script do 
-  = #javascript_include_tag "jquery-ui.min.js" 
-= javascript_include_tag "lolita/template-engine/application"
+  = javascript_include_tag "lolita/template-engine/application"
 - content_for :style do
-  = stylesheet_link_tag "lolita/template-engine/layout"
+  = stylesheet_link_tag "lolita/template-engine/application"
 .secondary  
   .box
     .boxtitle{:class => "black"}
@@ -18,6 +17,7 @@
       %h1= t("Manage layout")
       .arrow
     = render_component "lolita/template_engine/placeholders",:display, :placeholders => existing_placeholders()
+    = render_component "lolita/template_engine/content_block", :form
 :javascript
   ControllersActions = #{controllers_and_actions.to_json}
   LayoutConfig.width = #{engine_current_layout && engine_current_layout.width || 0};

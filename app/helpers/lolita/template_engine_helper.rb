@@ -1,6 +1,11 @@
 module Lolita
   module TemplateEngineHelper
 
+    def themes_for_select
+      themes = [[::I18n.t("lolita.template_engine.themes select default"),nil]]
+      themes + Lolita.themes.map{|name, theme| [theme.human_name,theme.name]}.sort{|a,b| a[0]<=>b[0]}
+    end
+
     def content_block_html_options(content_block,options={})
       html_options = {}
       if content_block

@@ -3,15 +3,14 @@
   width: 99%;
   position: relative;
 }
+
 #new-content-blocks{
   height: 100px;
   width: 300px;
   overflow:auto;
   border: 1px solid blue;
 }
-#placeholders-form{
 
-}
 #placeholders-form .field{
   overflow: initial !important;
 }
@@ -32,6 +31,14 @@
 .placeholder.disabled{
   background-color: #d9d9d9;
 }
+
+/*Content blocks*/
+#content-block-form form fieldset{
+  padding-top: 20px;
+}
+#content-block-form form select{
+  width: 270px;
+}
 .content-block{
   cursor: pointer;
   z-index: 100;
@@ -47,19 +54,25 @@
   position:relative;
   height: auto;
 }
-.content-block.inactive span.delete{
+.content-block.inactive span.delete, .content-block.inactive span.edit{
   display:none;
 }
-.content-block.active span.delete{
+.content-block.active span.delete, .content-block.active span.edit{
   position:absolute;
   color: #d9d9d9;
   font-size: 10px;
   padding: 3px;
   opacity: 0.5;
+}
+.content-block.active>span.delete{
   left: 0;
   top: 0;
 }
-.content-block.active span.delete:hover{
+.content-block.active>span.edit{
+  left: 20px;
+  top: 0;
+}
+.content-block.active span.delete:hover, .content-block.active span.edit:hover{
   opacity: 1;
 }
 
@@ -70,3 +83,4 @@
 .inner-placeholder{
   background-color: #d9d9d9;
 }
+

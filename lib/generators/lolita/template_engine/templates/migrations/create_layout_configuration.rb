@@ -7,6 +7,7 @@ class CreateLolitaLayoutConfiguration < ActiveRecord::Migration
       t.string  :predefined_block_name, :limit => 40
       t.integer :order_number
       t.integer :options
+      t.string  :data_collection_method, :limit => 40
     end
 
     add_index :lolita_layout_configurations, [:lolita_layout_id, :order_number], :name => "lolita_lc_complex"

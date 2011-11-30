@@ -1,0 +1,5 @@
+#content-block-form{:title => t(".Choose data collection method"), :"data-button-save" => t(".Save"), :"data-button-cancel" => t(".Cancel")}
+  = form_tag("#") do |f|
+    %fieldset
+      =# label_tag "data_collection_method",LolitaLayoutConfiguration.human_attribute_name("data_collection_method")
+      = select_tag "data_collection_method", options_for_select([]), {:class => "ui-widget-content ui-corner-all"}
