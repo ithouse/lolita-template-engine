@@ -25,7 +25,7 @@ module Lolita
 
       def render_content_blocks(placeholder)
         result = ""
-        lolita_layout.content_blocks_for_placeholder(placeholder).each do |cb,cb_config|
+        lolita_layout.content_blocks_for_placeholder(placeholder) do |cb,cb_config|
           if current_theme.presenter.respond_to?(:"#{cb_config.data_method}")
             locals = {
               :"#{cb.name}" => current_theme.presenter.send(:"#{cb_config.data_method}"), 

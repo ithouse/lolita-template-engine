@@ -57,7 +57,7 @@ module Lolita
       end
 
       class ContentBlock
-        attr_reader :name,:single, :path, :width, :height
+        attr_reader :name,:single, :path, :width, :height, :data_methods
 
         def initialize(path,name = nil,content_blocks = nil)
           @path = path
@@ -82,10 +82,12 @@ module Lolita
         private
 
         def load_attributes
-          f_processor = FileProcessor.new(self.path, "content-block", :custom_keys => [:single], :singular => true)
+          f_processor = FileProcessor.new(self.path, "content-block", :custom_keys => [:single, :methods], :singular => true)
           f_processor.process
           (f_processor.results.first || []).each do |attr,value|
-            if self.respond_to?(attr.to_sym)
+            if attr == :methods
+              @data_methods = value
+            elsif self.respond_to?(attr.to_sym)
               instance_variable_set(:"@#{attr}",value)
             end
           end

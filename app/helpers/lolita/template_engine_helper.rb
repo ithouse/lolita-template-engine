@@ -18,6 +18,8 @@ module Lolita
           :"data-name" => content_block.name, 
           :"data-width" => content_block.width(),
           :"data-height" => content_block.height(),
+          :"data-single" => content_block.single,
+          :"data-methods" => content_block.data_methods
         })
       end
       html_options

@@ -449,6 +449,9 @@ $(function(){
       extra_methods = []
     }
     methods = methods.concat(extra_methods)
+    methods = $.map(methods,function(method_name){
+      return $.trim(method_name)
+    })
     $dialog.data("block",$block)
     $dialog.data("methods",methods)
     $dialog.dialog("open")
