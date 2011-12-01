@@ -33,6 +33,9 @@
 }
 
 /*Content blocks*/
+#content-block-form{
+  display:none;
+}
 #content-block-form form fieldset{
   padding-top: 20px;
 }

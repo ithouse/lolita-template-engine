@@ -22,5 +22,5 @@
   ControllersActions = #{controllers_and_actions.to_json}
   LayoutConfig.width = #{engine_current_layout && engine_current_layout.width || 0};
   $(function(){
-    resize_all_elements();
+    initialize_layout_config()
   })
