@@ -63,9 +63,12 @@ class LolitaContentBlock < ActiveRecord::Base
     end
   end
 
-  def parsed_options
-    result = parse_options
-    result[0] && result[0]="single"
+  def single
+    parse_options[0]
+  end
+
+  def data_methods
+    ""
   end
 
   private
@@ -95,7 +98,7 @@ class LolitaContentBlock < ActiveRecord::Base
   end
 
   def parse_options
-    opt_nr = self.options
+    opt_nr = self.options || 0
     result = []
     4.downto(1) do |i|
       if opt_nr - 2**i >=0

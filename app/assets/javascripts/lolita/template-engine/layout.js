@@ -366,6 +366,10 @@ $(function(){
     }
   }
 
+  function get_form_data($block,attr){
+    return $block.children("input[id*='"+attr+"']").eq(0).val()
+  }
+
   function initialize_sortables(){
     //Placeholders also are sortable but they only changes sortable placeholder look on start and check fitnes of 
     //block in placeholder.
@@ -480,6 +484,8 @@ $(function(){
         $.each($(this).data("methods"),function(index,method_name){
           $select.append("<option value='"+method_name+"'>"+method_name+"</option>")
         })
+        var $block = $(this).data("block")
+        $select.val(get_form_data($block,"data_collection_method"))
       },
       close: function() {
         $(this).find("form select").html("")
