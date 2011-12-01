@@ -1,0 +1,11 @@
+%table
+  %thead
+    %td=t(".placeholder name")
+    %td=t(".#{dimension}")
+  %tbody
+    - Lolita.themes.each do |t_name,theme|
+      - theme.layouts.each do |l_name, e_layout|
+        - e_layout.placeholders.each do |p_name, e_placeholder|
+          %tr
+            %td= "#{theme.human_name} -> #{e_layout.name.to_s.humanize} -> #{e_placeholder.name.to_s.humanize}"
+            %td= raw("&nbsp;#{e_placeholder.send(dimension)}&nbsp;")

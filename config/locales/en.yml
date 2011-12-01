@@ -2,7 +2,7 @@ en:
   or: or
   "lolita-template-engine":
     layouts: "Layouts"
-    "content blocks": Content blocks
+    "content blocks": "Content blocks"
   lolita:
     template_engine:
       "themes select default": "-Themes-"
@@ -12,6 +12,11 @@ en:
   components:
     lolita:
       template_engine:
+        builders:
+          dimension_hint:
+            "placeholder name": "Placeholder name"
+            width: "Width"
+            height: "Height"
         content_block:
           form:
             "Choose data collection method": "Izvēlies datu savākšanas metodi"
@@ -35,3 +40,4 @@ en:
         placeholders: Placeholders
       lolita_layout_configuration:
         data_collection_method: "data collection method"
+        

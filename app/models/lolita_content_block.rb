@@ -17,12 +17,10 @@ class LolitaContentBlock < ActiveRecord::Base
     tab(:content) do
       field :name
       field :body, :string,:builder => :text, :simple => true
-      field :width, :integer do
-        title "#{LolitaContentBlock.human_attribute_name("width")} (#{self.dbi.klass.placeholders.map(&:width).sort.uniq.join(", ")})"
-      end
-      field :height, :integer, do 
-        title "#{LolitaContentBlock.human_attribute_name("height")} (#{self.dbi.klass.placeholders.map(&:height).sort.uniq.join(", ")})"
-      end
+      field :width_hint, :string, :builder => {:name => "/lolita/template_engine/builders",:state => :width_hint}
+      field :width, :integer
+      field :height_hint, :string, :builder => {:name => "/lolita/template_engine/builders",:state => :height_hint}
+      field :height, :integer
       field :theme_name, :array do
         include_blank "-Theme-"
         options_for_select(Lolita.themes.names.sort.map{|n| [n.humanize,n]})

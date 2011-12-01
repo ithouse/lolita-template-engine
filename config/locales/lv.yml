@@ -2,7 +2,7 @@ lv:
   or: "vai"
   "lolita-template-engine":
     "layouts": "Izkārtojumi"
-    "content blocks": Satura bloki
+    "content blocks": "Satura bloki"
   lolita:
     template_engine:
       "themes select default": "-Tēmas-"
@@ -12,6 +12,11 @@ lv:
   components:
     lolita:
       template_engine:
+        builders:
+          dimension_hint:
+            "placeholder name": "Viettura vārds"
+            width: "Platums"
+            height: "Augstums"
         content_block:
           form:
             "Choose data collection method": "Izvēlies datu savākšanas metodi"
