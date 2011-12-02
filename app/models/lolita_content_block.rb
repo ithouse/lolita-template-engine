@@ -4,6 +4,8 @@ class LolitaContentBlock < ActiveRecord::Base
  # has_many :layouts, :through => :layout_configurations, :class_name => "LolitaLayout"
   after_save :clean_configuration
   validates :width,:height,:name,:body, :presence => true
+  before_save :set_parsed_options
+  before_save :calculate_options
 
   lolita do
     list do
@@ -30,6 +32,8 @@ class LolitaContentBlock < ActiveRecord::Base
         include_blank "-Placeholder-"
         options_for_select(self.dbi.klass.placeholder_names.uniq.map{|n| [n.humanize,n]}.sort)
       end
+
+      field :single, :boolean
     end
   end
 
@@ -65,11 +69,23 @@ class LolitaContentBlock < ActiveRecord::Base
     parse_options[0]
   end
 
+  def single=(value)
+    parsed_options[0] = value.to_i > 0
+  end
+
   def data_methods
     ""
   end
 
   private
+
+  def calculate_options
+    result = 0
+    @parsed_options.each_with_index do |opt,i|
+      result += opt ? 2**(i+1) : 0
+    end
+    self.options = result
+  end
 
   def clean_configuration
     self.layout_configurations.each do |lc|
@@ -95,16 +111,27 @@ class LolitaContentBlock < ActiveRecord::Base
     end
   end
 
+  def set_parsed_options
+    parse_options
+  end
+
+  def parsed_options
+    @parsed_options || parse_options
+  end
+
   def parse_options
-    opt_nr = self.options || 0
-    result = []
-    4.downto(1) do |i|
-      if opt_nr - 2**i >=0
-        result << true
-        opt_nr -= 2**i
-      else
-        result << false
+    unless @parsed_options
+      opt_nr = self.options || 0
+      result = []
+      4.downto(1) do |i|
+        if opt_nr - 2**i >=0
+          result[i-1] = true
+          opt_nr -= 2**i
+        else
+          result[i-1] = false
+        end
       end
     end
+    @parsed_options ||= result
   end
 end

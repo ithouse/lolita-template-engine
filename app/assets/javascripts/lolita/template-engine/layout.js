@@ -53,7 +53,7 @@ function get_grid_width(){
 
 //Goes through all given elements and calculate they relative dimensions based on grid width.
 //Store information inside block and change dimensions if neccessary
-function resize_elements($elements, change_dimensions){
+function resize_elements($elements, change_dimensions,maximize){
   if(parseInt(LayoutConfig.width) > 0){
     var grid_width = get_grid_width()
     //if(LayoutConfig.init || grid_width!=LayoutConfig.prevGridWidth){
@@ -64,8 +64,14 @@ function resize_elements($elements, change_dimensions){
       $elements.each(function(){
         var $block = $(this);
         var dimension_diff = 2
-        var w = Math.floor(parseInt($block.attr("data-width")) * diff)-dimension_diff;
+        if(maximize){
+          var w = Math.floor(parseInt($block.attr("data-width")) * diff)-dimension_diff;
         var h = Math.floor(parseInt($block.attr("data-height")) * diff)-dimension_diff;
+        }else{
+           w = Math.ceil(parseInt($block.attr("data-width")) * diff)-dimension_diff;
+         h = Math.ceil(parseInt($block.attr("data-height")) * diff)-dimension_diff;
+        }
+        
         $block.data("width",w)
         $block.data("height",h);
         if(change_dimensions){
@@ -125,11 +131,11 @@ function center_spans($blocks){
 // For inactive content blocks changes attributes but not dimensions and center spans inside active content blocks.
 function resize_all_elements(){
   //var $active_blocks = $(".content-block.active")
-  resize_elements($("#placeholders-form .placeholder"),true)
+  resize_elements($("#placeholders-form .placeholder"),true,true)
   resize_elements($(".content-block.active"),true);
   resize_elements($(".content-block.inactive"));
   center_spans()
-  resize_elements($("#placeholders-form .placeholder"),true)
+  resize_elements($("#placeholders-form .placeholder"),true,true)
   //$(".content-block span.delete")
   LayoutConfig.init = false
 }
@@ -206,8 +212,12 @@ function fix_real_placeholder(ui){
   $block = ui.item
   $real_ph = $(".inner-placeholder")
   $real_ph.width($block.width());
-  $real_ph.height($block.height());  
-  $real_ph.css("cssFloat","left")
+  $real_ph.height($block.height()); 
+  if($block.hasClass("single")){
+    $real_ph.css({"cssFloat":"none","clear":"both"})
+  }else{
+    $real_ph.css("cssFloat","left") 
+  }
 }
 
 // Return array of clones of _destroy inputs and id inputs, thoes can be used to add back to form
@@ -388,9 +398,6 @@ function initialize_layout_config(){
   initialize_dialog();
 }
   
-  //Initialize placeholder dimensions
-  //initialize_placeholders();
-
 $(function(){
   windowScrollDimensions()
   $(".nested-form-fields-container .controller_select").live("change",function(){

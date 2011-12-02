@@ -10,15 +10,19 @@ module Lolita
       html_options = {}
       if content_block
         if content_block.is_a?(LolitaContentBlock)
-          special_classes = content_block.placeholder_name.gsub(",", " ")
+          special_classes = content_block.placeholder_name.split(",")
           html_options[:"data-content-block-id"] = content_block.id
         end
+        html_class = []
+        html_class << (options[:active] ? "active" : "inactive")
+        html_class << (special_classes.blank? ? "fit-in-all" : special_classes)
+        html_class << "single" if content_block.single
+
         html_options.merge!({
-          :class => "#{options[:active] ? "active" : "inactive"} #{special_classes.blank? ? "fit-in-all" : special_classes}",
+          :class => html_class.join(" "),
           :"data-name" => content_block.name, 
           :"data-width" => content_block.width(),
           :"data-height" => content_block.height(),
-          :"data-single" => content_block.single,
           :"data-methods" => content_block.data_methods
         })
       end
