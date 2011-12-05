@@ -24,6 +24,10 @@ module Lolita
         @presenter ||= self.presenter_class.new
       end
 
+      def reload_presenter
+        @presenter = self.presenter_class.new
+      end
+
       def layouts
         @layouts ||= Layouts.new(self)
       end

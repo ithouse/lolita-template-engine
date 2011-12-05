@@ -3,7 +3,7 @@ class LolitaLayout < ActiveRecord::Base
 
   has_many :layout_configurations, :class_name => "LolitaLayoutConfiguration", :dependent => :destroy do
     def by_placeholder(placeholder)
-      where(:placeholder_name => placeholder.name)
+      where(:placeholder_name => placeholder.name).order("order_number ASC")
     end
   end
   #has_many :content_blocks, :through => :layout_configurations, :class_name => "LolitaContentBlock"
@@ -52,7 +52,7 @@ class LolitaLayout < ActiveRecord::Base
   def content_blocks_for_placeholder(placeholder)
     blocks = []
     current_theme = self.theme
-    self.layout_configurations.where(:placeholder_name => placeholder.name).order("order_number ASC").each do |l_config|
+    self.layout_configurations.by_placeholder(placeholder).each do |l_config|
       if cb = l_config.content_block(current_theme)
         yield cb, l_config
       end
