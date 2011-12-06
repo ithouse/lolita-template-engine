@@ -62,24 +62,24 @@ function resize_elements($elements, change_dimensions,maximize){
 
       var diff = grid_width / LayoutConfig.width
       $elements.each(function(){
-        var $block = $(this);
+        var $element = $(this);
         var dimension_diff = 2
         if(maximize){
-          var w = Math.floor(parseInt($block.attr("data-width")) * diff)-dimension_diff;
-        var h = Math.floor(parseInt($block.attr("data-height")) * diff)-dimension_diff;
+          var w = Math.floor(parseInt($element.attr("data-width")) * diff)-dimension_diff;
+          var h = Math.floor(parseInt($element.attr("data-height")) * diff)-dimension_diff;
         }else{
-           w = Math.ceil(parseInt($block.attr("data-width")) * diff)-dimension_diff;
-         h = Math.ceil(parseInt($block.attr("data-height")) * diff)-dimension_diff;
+          w = Math.ceil(parseInt($element.attr("data-width")) * diff)-dimension_diff;
+          h = Math.ceil(parseInt($element.attr("data-height")) * diff)-dimension_diff;
         }
         
-        $block.data("width",w)
-        $block.data("height",h);
+        $element.data("width",w)
+        $element.data("height",h);
         if(change_dimensions){
-          $block.width(w)
-          if(isPlaceholder($block)){
-            $block.css("min-height", h)
+          $element.width(w)
+          if(isPlaceholder($element)){
+            $element.css("min-height", h)
           }else{
-            $block.height(h) 
+            $element.height(h) 
           }
         }
       })
@@ -135,7 +135,7 @@ function resize_all_elements(){
   resize_elements($(".content-block.active"),true);
   resize_elements($(".content-block.inactive"));
   center_spans()
-  resize_elements($("#placeholders-form .placeholder"),true,true)
+  resize_elements($("#placeholders-form .placeholder"),true)
   //$(".content-block span.delete")
   LayoutConfig.init = false
 }

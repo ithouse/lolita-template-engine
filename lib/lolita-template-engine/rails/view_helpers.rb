@@ -15,15 +15,19 @@ module Lolita
         result = ""
         lolita_layout.content_blocks_for_placeholder(placeholder) do |cb,cb_config|
           data_method = cb_config.data_method
-          if current_theme.presenter.respond_to?(:"#{data_method}")
-            locals = {
-              :"data_method" => data_method,
-              :"#{cb.name}" => current_theme.presenter.send(:"#{data_method}"), 
-              :presenter => current_theme.presenter,
-            }
-          else
-            warn "Method #{cb.name} is not defined in #{current_theme.presenter.class}"
+          
+          unless cb.is_a?(LolitaContentBlock)
+            if current_theme.presenter.respond_to?(:"#{data_method}")
+              locals = {
+                :"data_method" => data_method,
+                :"#{cb.name}" => current_theme.presenter.send(:"#{data_method}"), 
+                :presenter => current_theme.presenter,
+              }
+            else
+              warn "Method #{cb.name} is not defined in #{current_theme.presenter.class}"
+            end
           end
+
           result += if cb.is_a?(LolitaContentBlock)
             if cb.single
               raw("#{cb.body}<div style='clear:both'></div>")
