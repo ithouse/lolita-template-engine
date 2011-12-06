@@ -25,12 +25,16 @@ class LolitaContentBlock < ActiveRecord::Base
       field :height, :integer
       field :theme_name, :array do
         include_blank "-Theme-"
-        options_for_select(Lolita.themes.names.sort.map{|n| [n.humanize,n]})
+        values do 
+          Lolita.themes.names.sort.map{|n| [n.humanize,n]}
+        end
       end
 
       field :placeholder_name, :array do
         include_blank "-Placeholder-"
-        options_for_select(self.dbi.klass.placeholder_names.uniq.map{|n| [n.humanize,n]}.sort)
+        values do 
+          self.dbi.klass.placeholder_names.uniq.map{|n| [n.humanize,n]}.sort
+        end
       end
 
       field :single, :boolean
