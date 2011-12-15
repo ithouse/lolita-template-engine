@@ -47,7 +47,8 @@ module Lolita
               unless File.directory?(path)
                 file_name = ::File.basename(path)
                 file_name = file_name.split(".").first.gsub(/^_/,"")
-                @content_blocks[file_name.to_sym] = ContentBlock.new(path,file_name, self)
+                new_block = ContentBlock.new(path,file_name, self)
+                @content_blocks[new_block.name.to_sym] = new_block
               end
             end
             @loaded = true
