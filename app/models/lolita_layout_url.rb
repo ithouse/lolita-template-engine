@@ -14,9 +14,9 @@ class LolitaLayoutUrl < ActiveRecord::Base
   def self.by_path(request)
     urls = self.arel_table
     r_path = request.path == "" ? "/" : request.path
-    exact_match = urls[:path].eq(r_path).or(urls[:path].eq(request.url))
+    exact_match = urls[:path].eq(r_path)
     path_match = exact_match.or(controller_action_match(request,urls))
-    self.where(path_match)
+    self.where(path_match).order("id ASC")
   end
 
   def self.controller_action_match(request,urls)

@@ -17,14 +17,14 @@ module Lolita
           data_method = cb_config.data_method
           
           unless cb.is_a?(LolitaContentBlock)
-            if current_theme.presenter.respond_to?(:"#{data_method}")
+            if current_theme.presenter.respond_to?(:"#{data_method}") || instance_variable_get(:"@#{data_method}") 
               locals = {
                 :"data_method" => data_method,
-                :"#{cb.name}" => current_theme.presenter.send(:"#{data_method}"), 
+                :"#{cb.name}" => instance_variable_get(:"@#{data_method}") || current_theme.presenter.send(:"#{data_method}"), 
                 :presenter => current_theme.presenter,
               }
             else
-              warn "Method #{cb.name} is not defined in #{current_theme.presenter.class}"
+              warn "Method #{cb.name} is not defined in #{current_theme.presenter.class} and there is no instance variable @#{data_method}"
             end
           end
 
