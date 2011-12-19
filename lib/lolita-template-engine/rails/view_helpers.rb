@@ -13,20 +13,20 @@ module Lolita
 
       def render_content_blocks(placeholder)
         result = ""
+        locals={}
+
         lolita_layout.content_blocks_for_placeholder(placeholder) do |cb,cb_config|
           data_method = cb_config.data_method
-          
           unless cb.is_a?(LolitaContentBlock)
             if current_theme.presenter.respond_to?(:"#{data_method}") || instance_variable_get(:"@#{data_method}") 
-              locals = {
-                :"data_method" => data_method,
-                :"#{cb.name}" => instance_variable_get(:"@#{data_method}") || current_theme.presenter.send(:"#{data_method}"), 
-                :presenter => current_theme.presenter,
-              }
+              locals[:"#{cb.name}"] = instance_variable_get(:"@#{data_method}") || current_theme.presenter.send(:"#{data_method}")
             else
               warn "Method #{cb.name} is not defined in #{current_theme.presenter.class} and there is no instance variable @#{data_method}"
             end
           end
+
+          locals[:"data_method"] = data_method
+          locals[:presenter] = current_theme.presenter
 
           result += if cb.is_a?(LolitaContentBlock)
             if cb.single
