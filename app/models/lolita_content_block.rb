@@ -107,7 +107,7 @@ class LolitaContentBlock < ActiveRecord::Base
         if placeholder
           if (self.width > placeholder.width && placeholder.stretch.to_s!="horizontally") ||
             (self.height > placeholder.width && placeholder.stretch.to_s!="vertically") ||
-            self.placeholder_name.present? && placeholder.name!=self.name
+            (self.placeholder_name.present? && placeholder.name!=self.placeholder_name)
             lc.destroy
           end
         end
