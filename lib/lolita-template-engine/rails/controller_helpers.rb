@@ -27,7 +27,6 @@ module Lolita
       end
 
       def current_layout
-        debugger
         unless self.respond_to?(:lolita_mapping)
           unless @current_layout
             layout_name = current_theme && find_layout_by_url
