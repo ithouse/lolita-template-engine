@@ -1,5 +1,4 @@
 require 'lolita'
-require 'ruby-debug'
 module Lolita
   # Lolita::TemplateEngine add theming functionality to application. 
   # TemplateEngine consist of two parts. 
