@@ -46,7 +46,7 @@
   margin: 0 10px;
 }
 #content-blocks {margin: 10px 5px 0;}
-.content-block {padding: 2px}
+.content-block {}
 .content-block:hover {background: rgba(255, 255, 255, 0.7)}
 .content-block span {color: #777;}
 #new-content-block {display: block; padding-top: 5px; margin: 10px 0 10px; border-top: 1px solid #ccc;}

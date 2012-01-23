@@ -4,26 +4,19 @@ class LolitaLayoutUrl < ActiveRecord::Base
   validates :controller, :presence => true, :if => Proc.new{|rec| rec.path.blank?}
 
   def self.recognize(themes,request)
-    by_themes(themes).by_path(request).first
+    by_path(themes,request)
   end
 
   def self.by_themes themes
     where(:lolita_layout_id => themes.map(&:id))
   end
 
-  def self.by_path(request)
-    urls = self.arel_table
+  def self.by_path(themes,request)
     r_path = request.path == "" ? "/" : request.path
-    exact_match = urls[:path].eq(r_path)
-    path_match = exact_match.or(controller_action_match(request,urls))
-    self.where(path_match).order("id ASC")
-  end
-
-  def self.controller_action_match(request,urls)
-    controller_match = urls[:controller].eq(request.params[:controller].camelize)
-    action_match = urls[:action].eq(request.params[:action]).or(urls[:action].eq(""))
-    action_match = controller_match.and(action_match)
-    action_match
+    layout_url = self.where(:path => r_path).by_themes(themes).first
+    layout_url ||= self.where("controller = ? AND action=?",request.params[:controller].to_s.camelize,request.params[:action]).by_themes(themes).first
+    layout_url ||= self.where(:controller => request.params[:controller].to_s.camelize, :action=>"").by_themes(themes).first
+    layout_url
   end
 
 end
