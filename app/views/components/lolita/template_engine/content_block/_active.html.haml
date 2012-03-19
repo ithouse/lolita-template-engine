@@ -1,4 +1,4 @@
-- if content_block = tab_form.object.content_block
+- if content_block = current_form.object.content_block
   .content-block{content_block_html_options(content_block,:active => true)}
     = render_component "lolita/template_engine/content_block", :content, :content_block => content_block
     = render_component "lolita/template_engine/placeholder", :nested_fields

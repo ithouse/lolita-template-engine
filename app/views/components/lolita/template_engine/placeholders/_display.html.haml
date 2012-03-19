@@ -1,9 +1,9 @@
 = render_component "lolita/configuration/tab", :error_msg, :tab => resource.lolita.tabs.first
-= form_for resource, :html => {:id => "placeholders-form"} do |f|
-  - tab_form(f) do
-    = render_component "lolita/configuration/tab", :fields, :tab => tab_form.object.lolita.tabs.first
+= form_for resource,:url => resource.new_record? ? lolita_layouts_path : lolita_layout_path(resource), :method => resource.new_record? ? "post" : "put", :html => {:id => "placeholders-form", :class => "associated"} do |f|
+  - current_form(f) do
+    = render_component "lolita/configuration/tab", :fields, :tab => current_form.object.lolita.tabs.first
     .field
-      - field = Lolita::Configuration::Field::Base.new(tab_form.object.lolita.dbi,:placeholders)
+      - field = Lolita::Configuration::Field::Base.new(current_form.object.lolita.dbi,:placeholders)
       = render_component "lolita/configuration/field", :label, :field => field
       = render_component "lolita/template_engine/placeholders", :grid, :placeholders => placeholders
   .clear

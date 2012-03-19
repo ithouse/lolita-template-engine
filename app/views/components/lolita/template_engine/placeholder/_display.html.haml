@@ -2,6 +2,6 @@
   :"data-width" => placeholder.width(), :"data-height" => placeholder.height(), |
   :"data-stretch" => placeholder.stretch, :"data-name" => placeholder.name, |
   :"data-form" => (render_component("lolita/template_engine/placeholder", :nested_form, :placeholder => placeholder))}
-  = tab_form.fields_for :layout_configurations,tab_form.object.layout_configurations.by_placeholder(placeholder) do |builder|
-    - tab_form(builder) do
+  = current_form.fields_for :layout_configurations,current_form.object.layout_configurations.by_placeholder(placeholder) do |builder|
+    - current_form(builder) do
       = render_component "lolita/template_engine/content_block", :active

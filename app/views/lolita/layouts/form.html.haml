@@ -2,25 +2,26 @@
   = javascript_include_tag "lolita/template-engine/application"
 - content_for :style do
   = stylesheet_link_tag "lolita/template-engine/application"
-.secondary  
-  .box
-    .boxtitle{:class => "black"}
-      %h1 
-        = LolitaContentBlock.model_name.human(:count => 3)
-      .arrow
-    = render_component "lolita/template_engine/themes", :select
-    = render_component "lolita/shared", :save_button
-.tabs{:class => "template-engine", :"data-method"=>resource.new_record? ? "POST" : "PUT" , |
-  :"data-tabs-url" => resource.new_record? ? lolita_layouts_path : lolita_layout_path(resource)}
-  .tab{:class => "box first-tab"}
+#content.with-secondary
+  .secondary  
+    .box
+      .boxtitle{:class => "black"}
+        %h1 
+          = LolitaContentBlock.model_name.human(:count => 3)
+        .arrow
+      = render_component "lolita/template_engine/themes", :select
+      = render_component "lolita/shared", :buttons, :type => "save"
+  .tabs{:class => "box template-engine"}
     .tab-title{:class => "boxtitle black"}
-      %h1= t("Manage layout")
-      .arrow
+      %h2{:class => "title active light"}
+        = t("Manage layout")
+        .arrow
+      .clear
     = render_component "lolita/template_engine/placeholders",:display, :placeholders => existing_placeholders()
     = render_component "lolita/template_engine/content_block", :form
-:javascript
-  ControllersActions = #{controllers_and_actions.to_json}
-  LayoutConfig.width = #{engine_current_layout && engine_current_layout.width || 0};
-  $(function(){
-    initialize_layout_config()
-  })
+  :javascript
+    ControllersActions = #{controllers_and_actions.to_json}
+    LayoutConfig.width = #{engine_current_layout && engine_current_layout.width || 0};
+    $(function(){
+      initialize_layout_config()
+    })
