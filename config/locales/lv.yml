@@ -18,10 +18,15 @@ lv:
             width: "Platums"
             height: "Augstums"
         content_block:
+          content: 
+            "Edit": "Labot"
           form:
             "Choose data collection method": "Izvēlies datu savākšanas metodi"
             "Save": "Saglabāt"
             "Cancel": "Aizvērt"
+        content_blocks:
+          display:
+            "New content block": "Jauns satura bloks"
   activerecord:
     models:
       lolita_content_block: 
@@ -35,8 +40,20 @@ lv:
         other: "Saites"
     attributes:
       lolita_layout:
-        urls: "URL's (ceļš vai kontrolieris, darbība)"
+        name: "Nosaukums"
+        theme_name: "Tēmas nosaukums"
+        urls: "Adrese (ceļš vai kontrolieris, darbība)"
         title: Virsraksts
         placeholders: Vietturi
       lolita_layout_configuration:
         data_collection_method: datu savākšanas metode
+      lolita_content_block:
+        name: "Nosaukums"
+        width: "Platums"
+        height: "Augstums"
+        theme_name: "Tēma"
+        placeholder_name: "Vietturis"
+        body: "Saturs"
+        width_hint: "Platuma ieteikumi"
+        height_hint: "Augstuma ieteikumi"
+        single: "Viens rindā?"

@@ -76,11 +76,29 @@ module Lolita
           end
         end
 
+        def human_data_methods
+          (data_methods && data_methods.gsub(/\s/,"").split(",") || []).map{|data_method| ::I18n.t("#{translation_path}.data_methods.#{data_method}")}.join(",")
+        end
+
+        def human_name
+          possible_human_name = ::I18n.t("#{translation_path}")
+          if possible_human_name.is_a?(Hash) || possible_human_name.to_s.match(/translation missing/)
+            ::I18n.t("#{translation_path}.title")
+          else
+            possible_human_name
+          end 
+        end 
+
         def view_path
           File.join("themes",@content_blocks.theme.name,@name)
         end
 
+        def translation_path
+          "themes.#{@content_blocks.theme.name}.content_blocks.#{name}"
+        end
+
         private
+
 
         def load_attributes
           f_processor = FileProcessor.new(self.path, "content-block", :custom_keys => [:single, :methods], :singular => true)

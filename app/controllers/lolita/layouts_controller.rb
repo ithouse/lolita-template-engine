@@ -1,7 +1,7 @@
 class Lolita::LayoutsController < Lolita::TemplateEngineController
   
   def show
-    authorize!(:create, LolitaLayout)
+    authorization_proxy.authorize!(:create, LolitaLayout)
     self.resource = LolitaLayout.new(:theme_name => params[:theme_id], :name => params[:id])
     if engine_current_theme 
       placeholders = existing_placeholders
@@ -12,7 +12,7 @@ class Lolita::LayoutsController < Lolita::TemplateEngineController
   end
 
   def select
-    authorize!(:create, LolitaLayout)
+    authorization_proxy.authorize!(:create, LolitaLayout)
     self.resource = LolitaLayout.new(:theme_name => params[:theme_id])
     if engine_current_theme
       render_component "lolita/template_engine/layouts", :select
@@ -22,7 +22,7 @@ class Lolita::LayoutsController < Lolita::TemplateEngineController
   end
 
   def content_blocks
-    authorize!(:create,LolitaLayout)
+    authorization_proxy.authorize!(:create,LolitaLayout)
     self.resource = LolitaLayout.new(:theme_name => params[:theme_id], :name => params[:id])
     if engine_current_layout
       render_component "lolita/template_engine/content_blocks", :display, 

@@ -21,9 +21,10 @@ module Lolita
         html_options.merge!({
           :class => html_class.join(" "),
           :"data-name" => content_block.name, 
+          :"data-human-name" => content_block.human_name,
           :"data-width" => content_block.width(),
           :"data-height" => content_block.height(),
-          :"data-methods" => content_block.data_methods
+          :"data-methods" => content_block.human_data_methods
         })
       end
       html_options

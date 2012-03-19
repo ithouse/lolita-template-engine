@@ -56,14 +56,13 @@ module Lolita
 
       class Layout
         
-        attr_reader :name, :system_name, :human_name, :path, :width,:height
+        attr_reader :name, :system_name, :path, :width,:height
 
         def initialize(path,layouts = nil)
           @path = path
           @layouts = layouts
           raise ArgumentError, "Bad path for layout: #{@path}" if @path.blank? || !File.exist?(@path)
           @system_name = ::File.basename(path).split(".").first
-          @human_name = (@name || @system_name).humanize
           load_dimensions
           @width = @width && @width.to_i
           @height = @height && @height.to_i
@@ -77,6 +76,9 @@ module Lolita
           "#{@layouts.theme.name}/#{self.system_name}"
         end
 
+        def human_name
+          ::I18n.t("themes.#{@layouts.theme.name}.layouts.#{name}")
+        end 
 
         private
 

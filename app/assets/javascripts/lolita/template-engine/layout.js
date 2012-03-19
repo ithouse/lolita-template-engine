@@ -492,7 +492,7 @@ $(function(){
   $(".content-block.active span.edit").live("click",function(){
     var $block = $(this).parent()
     var $dialog = $("#content-block-form")
-    var methods = [$block.data("name")]
+    var methods = [$block.data("human-name")]
     var possible_methods = ($block.attr("data-methods") || "").split(",")
     if(possible_methods[0]!=""){
       var extra_methods = possible_methods

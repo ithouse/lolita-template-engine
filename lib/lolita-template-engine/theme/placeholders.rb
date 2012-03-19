@@ -63,6 +63,10 @@ module Lolita
           @disabled = @disabled.to_s == "true" ? true : false
         end
 
+        def human_name
+          ::I18n.t("themes.#{placeholders.layout.layouts.theme.name}.placeholders.#{name}")
+        end
+
         def layout
           self.placeholders && self.placeholders.layout
         end

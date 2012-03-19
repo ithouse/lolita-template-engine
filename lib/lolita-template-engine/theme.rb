@@ -8,8 +8,11 @@ module Lolita
         raise ArgumentError, "Path not found" unless File.directory?(path.to_s)
         @path = path
         @name = path.split("/").last
-        @human_name = @name.humanize
         define_path_set
+      end
+
+      def human_name
+        ::I18n.t("themes.#{name}.title")
       end
 
       def presenter_class
