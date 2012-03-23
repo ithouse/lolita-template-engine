@@ -69,6 +69,15 @@ class LolitaContentBlock < ActiveRecord::Base
     end
   end
 
+  def human_name
+    possible_name = ::I18n.t("themes.#{theme_name}.content_blocks.#{name}")
+    possible_name.match(/translation.*missing/) ? name : possible_name
+  end
+
+  def human_data_methods
+    human_name
+  end
+
   def single
     parse_options[0]
   end
