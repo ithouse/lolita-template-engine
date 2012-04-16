@@ -80,7 +80,7 @@ module LolitaTemplateEngineConfiguration
   end
 end
 
-Lolita.scope.extend(LolitaTemplateEngineConfiguration)
+Lolita.configuration.extend(LolitaTemplateEngineConfiguration)
 
 require 'lolita-template-engine/errors'
 require 'lolita-template-engine/module'

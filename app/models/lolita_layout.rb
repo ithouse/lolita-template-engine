@@ -21,8 +21,8 @@ class LolitaLayout < ActiveRecord::Base
         field :path, :string
         field :path_select, :array, :builder => {:name => "/lolita/template_engine/layout", :state => "urls"}
       end
-      field :theme_name, :hidden
-      field :name, :hidden
+      field :theme_name, :string, :builder => :hidden
+      field :name, :string, :builder => :hidden
     end
   end
 
