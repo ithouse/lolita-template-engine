@@ -1,6 +1,6 @@
 class LolitaLayout < ActiveRecord::Base
   include Lolita::Configuration
-
+  attr_protected
   has_many :layout_configurations, :class_name => "LolitaLayoutConfiguration", :dependent => :destroy do
     def by_placeholder(placeholder)
       where(:placeholder_name => placeholder.name).order("order_number ASC")

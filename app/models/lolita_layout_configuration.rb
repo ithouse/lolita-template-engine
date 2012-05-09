@@ -1,7 +1,7 @@
 class LolitaLayoutConfiguration < ActiveRecord::Base
   belongs_to :lolita_layout, :class_name => "LolitaLayout"
   belongs_to :lolita_content_block, :class_name => "LolitaContentBlock"
-
+  attr_protected
   def content_block(theme = nil)
     if self.lolita_content_block
       self.lolita_content_block

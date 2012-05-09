@@ -1,5 +1,6 @@
 class LolitaContentBlock < ActiveRecord::Base
   include Lolita::Configuration
+  attr_protected
   has_many :layout_configurations, :class_name => "LolitaLayoutConfiguration", :dependent => :destroy
  # has_many :layouts, :through => :layout_configurations, :class_name => "LolitaLayout"
   after_save :clean_configuration

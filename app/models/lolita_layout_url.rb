@@ -2,7 +2,7 @@ class LolitaLayoutUrl < ActiveRecord::Base
   belongs_to :lolita_layout, :class_name => "LolitaLayout"
   validates :path, :presence => true, :if => Proc.new{|rec| rec.controller.blank?}
   validates :controller, :presence => true, :if => Proc.new{|rec| rec.path.blank?}
-
+  attr_protected
   def self.recognize(themes,request)
     by_path(themes,request)
   end
