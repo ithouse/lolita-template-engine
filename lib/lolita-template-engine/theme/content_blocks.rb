@@ -77,15 +77,17 @@ module Lolita
         end
 
         def human_data_methods
-          (data_methods && data_methods.gsub(/\s/,"").split(",") || []).map{|data_method| ::I18n.t("#{translation_path}.data_methods.#{data_method}")}.join(",")
+          (data_methods && data_methods.gsub(/\s/,"").split(",") || []).map do |data_method| 
+            [::I18n.t("#{translation_path}.data_methods.#{data_method}"), data_method ]
+          end.join(",")
         end
 
         def human_name
           possible_human_name = ::I18n.t("#{translation_path}")
           if possible_human_name.is_a?(Hash) || possible_human_name.to_s.match(/translation missing/)
-            ::I18n.t("#{translation_path}.title")
+            "#{::I18n.t("#{translation_path}.title")},#{name}"
           else
-            possible_human_name
+            "#{possible_human_name},#{name}"
           end 
         end 
 

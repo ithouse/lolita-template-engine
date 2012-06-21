@@ -1,3 +1,3 @@
-%span= content_block.human_name
+%span= content_block.human_name.split(",").first
 %span{:class=>"delete"}= image_tag("lolita/trash-small.png")
 %span{:class=>"edit"}= t(".Edit")

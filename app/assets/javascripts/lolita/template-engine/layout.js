@@ -379,9 +379,13 @@ function initialize_dialog(){
       open:function(){
         var $select = $(this).find("form select")
         $select.html("")
-        $.each($(this).data("methods"),function(index,method_name){
-          $select.append("<option value='"+method_name+"'>"+method_name+"</option>")
-        })
+        var methods = $(this).data("methods"),
+            methods_len = methods.length
+        for(var i=0;i < methods_len; i=i+2){
+          name = methods[i];
+          value = methods[i+1]
+          $select.append("<option value='"+value+"'>"+name+"</option>")
+        }
         var $block = $(this).data("block")
         $select.val(get_form_data($block,"data_collection_method"))
       },
@@ -492,7 +496,7 @@ $(function(){
   $(".content-block.active span.edit").live("click",function(){
     var $block = $(this).parent()
     var $dialog = $("#content-block-form")
-    var methods = [$block.data("human-name")]
+    var methods = $block.data("human-name").split(",")
     var possible_methods = ($block.attr("data-methods") || "").split(",")
     if(possible_methods[0]!=""){
       var extra_methods = possible_methods
